@@ -1,0 +1,9 @@
+{
+  "author": "Vaidik Kapoor (kapoor.vaidik@gmail.com)",
+  "name": "Major",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "node-static": "~0.6.4"
+  }
+}
