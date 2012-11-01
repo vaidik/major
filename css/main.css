@@ -136,7 +136,11 @@ textarea {
     height: 100px;
 }
 
-.toggle-horizontal:hover {
+.toggle {
+    background: #ddd;
+}
+
+.toggle:hover {
     background: #eee;
 }
 
@@ -148,9 +152,8 @@ textarea {
     background: #eee;
 }
 
-.toggle {
+.toggle-vertical {
     width: 12px;
-    min-height: 100px;
 
     float: left;
     display: block;
