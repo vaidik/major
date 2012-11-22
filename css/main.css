@@ -19,7 +19,7 @@ textarea {
 }
 
 body {
-    font-size: 1em;
+    font-size: 0.8em;
     line-height: 1.4;
     overflow: hidden;
 }
@@ -108,6 +108,7 @@ textarea {
 .top-row {
     background: #ddd;
     padding: 6px;
+    height: 0;
 }
 
 .workspace {
@@ -117,10 +118,28 @@ textarea {
 
 .planner {
     width: 101%;
-    background: url(../img/planner_background.png);
+}
+
+.planner-toolbar.tool {
+    padding: 10px 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.planner-toolbar.tool:hover {
+    background: #eee;
 }
 
 .board {
+    overflow: hidden;
+}
+
+.pin-board {
+    background: url(../img/planner_background.png);
+    width: 200%;
+    height: 200%;
+    position: relative;
+    top: -50%;
+    left: -50%;
 }
 
 .scene-manager {
@@ -133,7 +152,47 @@ textarea {
 }
 
 .scene-toolbar {
-    height: 100px;
+    height: 114px;
+}
+
+/* DELETE THIS*/
+
+#modal {
+}
+
+#modal > textarea {
+    width: 95%;
+    height: 70px;
+}
+
+.timeline {
+    font-size: 13px;
+    width: 100%;
+}
+
+.timeline > tr > td > div {
+    height: 33px;
+}
+
+.timeline_block {
+    background: #bbb;
+    width: 150px;
+    border-radius: 6px;
+    height: 0px;
+    padding: -4px;
+    margin-right: 4px;
+    display: inline-block;
+    font-size: 9px;
+    text-align: center;
+}
+
+.timeline_block:hover {
+    background: #A0A0A0;
+}
+
+.add_button img {
+    width: 18px;
+    margin: 0;
 }
 
 .toggle {
@@ -154,28 +213,40 @@ textarea {
 
 .toggle-vertical {
     width: 12px;
-
-    float: left;
-    display: block;
 }
 
 .toolbar {
-    width: -webkit-calc(100% - 12px);
-    width: calc(100% - 12px);
+    vertical-align: top;
+}
 
-    float: left;
-    display: block;
+.toolbar-holder {
+    width: 100%;
+    height: 100%;
+}
+
+#zoom {
+    font-size: 10px;
+}
+
+#zoom:hover {
+    background: none;
+}
+
+#zoom_slider {
+    width: 70%;
+}
+
+#zoom_value {
+    text-align: center;
 }
 
 .local-toolbar {
-    height: 300px;
     background: #ccc;
-    border-bottom: 2px solid gray;
 }
 
 .global-toolbar {
     height: 400px;
-    background: #ddd;
+    background: #ccc;
     border-bottom: 2px solid gray;
 }
 

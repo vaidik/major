@@ -4,7 +4,7 @@ var layout = {
         $('.right-column').css('height', $(window).height() - $('.top-row').outerHeight());
 
         // adjust height of .toggle-vertical
-        $('.toggle-vertical').css('height', $('.right-column').height());
+        $('.toggle-holder').css('height', $('.right-column').height());
 
         // adjust the width of .workspace
         $('.workspace').css('width', $(window).width() - $('.right-column').width());
@@ -18,17 +18,24 @@ var layout = {
             right_column.css('overflow-y', 'visible');
             var toolbar_width = toolbar.width();
             $('.workspace').css('width', $('.workspace').width() + toolbar_width);
-            right_column.css('width', right_column.width() - toolbar_width);
+            right_column.css('width', '12');
             toolbar.addClass('toggle-off');
             toolbar.removeClass('toggle-on');
+            toolbar.attr('data-width', toolbar_width);
+            $('> div', toolbar).hide();
 
         } else {
             right_column.css('overflow-y', 'scroll');
             right_column.css('width', '');
-            $('.workspace').css('width', $('.workspace').width() - toolbar.width() - 12);
+            $('.workspace').css('width', $('.workspace').width() - toolbar.attr('data-width'));
             toolbar.addClass('toggle-on');
             toolbar.removeClass('toggle-off');
+            $('> div', toolbar).show();
+
         }
+
+        layout.adjust_columns();
+        planner.adjust_scene_manager();
     },
 };
 

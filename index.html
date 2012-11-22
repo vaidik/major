@@ -24,52 +24,127 @@
 
         <!-- Add your site or application content here -->
 
-        <div class="top-row">
-            <span style="font-size: 30px;">Collaborative Fiction Authoring</span>
-        </div>
         <div class="main">
             <div class="workspace">
                 <div class="planner">
                     <div class="board">
-                        <div style="font-size: 26px; color: white; text-align: center; position: relative; top: 250px;">Work Board</div>
+                        <div class="pin-board"></div>
                     </div>
                     <div class="scene-manager">
                         <div class="toggle-horizontal toggle"></div>
                         <div class="scene-toolbar">
-                            <div style="font-size: 26px; text-align: center; position: relative; top: 25px;">Scene Management</div>
+                            <table class="timeline" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>
+                                        <div style="display: inline-block; width: 75px; height: 100px;">
+                                            <div style=" height: 30px;">Scenes</div>
+                                            <div style="background: #ddd;  height: 30px;">Chapters</div>
+                                            <div style=" height: 30px;">Parts</div>
+                                        </div>
+
+                                        <div style="display: inline-block; width: 70%; height: 112px; margin-left: -10px; overflow-x: scroll;" class="timeline-objects">
+                                        <div style="width: 740px; height: 30px;" class="trow">
+                                            <div class="timeline_block" style="width:50px; padding: 0; height: 14px;">Scene 1</div>
+                                            <div class="timeline_block" style="width:90px; padding: 0; height: 14px;">Scene 2</div>
+                                            <div class="timeline_block" style="width:60px; padding: 0; height: 14px;">Scene 3</div>
+                                            <div class="timeline_block" style="width:100px;  padding: 0; height: 14px;">Scene 4</div>
+                                            <div class="timeline_block" style="width:140px;  padding: 0; height: 14px;">Scene 5</div>
+                                            <div class="timeline_block" style="width:60px;  padding: 0; height: 14px;">Scene 6</div>
+                                            <div class="timeline_block" style="width:140px;  padding: 0; height: 14px;">Scene 7</div>
+                                        </div>
+
+                                        <div style="background: #ddd; height: 30px;" class="trow">
+                                            <div class="timeline_block" style="width:148px; padding: 0; height: 14px;">Chapter 1</div>
+                                            <div class="timeline_block" style="width:168px; padding: 0; height: 14px;">Chapter 2</div>
+                                            <div class="timeline_block" style="width:140px; padding: 0; height: 14px;">Chapter 3</div>
+                                            <div class="timeline_block" style="width:208px; padding: 0; height: 14px;">Chapter 4</div>
+                                        </div>
+
+                                        <div style=" height: 30px;" class="trow">
+                                            <div class="timeline_block" style="width:324px; padding: 0; height: 14px;">Part 1</div>
+                                            <div class="timeline_block" style="width:356px; padding: 0; height: 14px;">Part 2</div>
+                                        </div>
+                                        </div>
+                                        <div style="display: inline-block; width: 40px; height: 100px; margin-left: -10px;" class="add_button">
+                                        <div style=" height: 30px;"><img src="img/add_icon.png"></div>
+                                        <div style="background: #ddd; height: 30px;"><img src="img/add_icon.png"></div>
+                                        <div style=" height: 30px;"><img src="img/add_icon.png"></div>
+                                        </div>
+<!--
+                                        <div style="display: inline-block; width: 40px; height: 100px;">
+                                        <div style=" height: 30px;">s</div>
+                                        <div style="background: #ddd; height: 30px;">as</div>
+                                        <div style=" height: 30px;">as</div>
+                                        </div>
+    -->
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
+                <div id="editor" style="display: none;">
+                    <form method="post" action="show.php">
+                        <textarea name="content" cols="50" rows="15" style="width:100%; height: inherit;">
+                            This is some content that will be editable with TinyMCE.
+                        </textarea>
+                    </form>
+                </div>
             </div>
             <div class="right-column" style="float: right;">
-                <div class="toggle-vertical toggle"></div>
-                <div class="toolbar">
-                    <div class="local-toolbar">
-                        <div style="font-size: 26px; text-align: center; position: relative; top: 130px;">Planner Toolbar</div>
-                    </div>
-                    <div class="global-toolbar">
-                        <div style="font-size: 26px; text-align: center; position: relative; top: 180px;">Global Toolbar</div>
-                    </div>
-                </div>
+                <table class="toolbar-holder" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="toggle-vertical toggle"></td>
+                        <td class="toolbar">
+                            <div class="" style="padding: 15px;">
+                                <div>
+                                    <span id="workspace-toggle"><a href="#">Editor</a> <a href="#">Planner</a></a> &nbsp;&nbsp; Research Toolbar</div>
+                            </div>
+                            <div class="" style="padding: 15px;">
+                                <input type="text" style="margin: 0; width: 90%;" placeholder="Dictionary & Thesaurus">
+                                <input type="submit" style="margin-left: -35px; background: url('img/search_icon.png'); width: 25px; border: 0;" value="">
+                            </div>
+                            <div class="local-toolbar">
+                                <div class="planner-toolbar tool">Theme</div>
+                                <div class="planner-toolbar tool">Plot</div>
+                                <div class="planner-toolbar tool">Setting</div>
+                                <div class="planner-toolbar tool">Character</div>
+                                <div class="planner-toolbar tool">Object</div>
+                                <div class="planner-toolbar tool">Scene</div>
+
+                                <div class="planner-toolbar tool" id="zoom">
+                                    <div>100% <input type="range" min="100" max="300" step="5" value="100" id="zoom_slider" onchange="planner.zoom_slider_update(this.value)"> 300%</div>
+                                    <div id="zoom_value">100%</div>
+                                </div>
+                            </div>
+                            <div class="global-toolbar">
+                                <div>
+                                    <table width="100%;">
+                                        <tr>
+                                            <td class="planner-toolbar tool">References</td>
+                                            <td class="planner-toolbar tool" width="30"><img src="img/add_icon.png"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
 
         <!-- All the scripts -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="js/vendor/jquery-ui-1.9.1.custom.min.js"></script>
+        <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="js/vendor/handlebars-1.0.rc.1.js"></script>
+        <script type="text/javascript" src="js/vendor/tiny_mce/tiny_mce.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
         <script src="js/layout.js"></script>
         <script src="js/planner.js"></script>
+        <script src="js/editor.js"></script>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <!--
-        <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
-        </script>
-        -->
     </body>
 </html>
