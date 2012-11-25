@@ -29,6 +29,20 @@ var planner = {
 
     zoom_slider_update: function(val) {
         $('#zoom_value').html(val + '%');
+        if ($('.pin-board .item').length) {
+            $('.pin-board').traggable('changeScale', parseInt(val)/100);
+        }
+        $('.pin-board').css('-webkit-transform', 'scale(' + parseInt(val)/100  + ')');
+        val = Math.round((parseInt(val) / 100 - 1)*100)/100;
+        console.log('-webkit-calc(679px*' + val + ')');
+        $('.pin-board').css('top', '-webkit-calc(679px*' + val + ')')
+                       .css('left', '-webkit-calc(1366px*' + val + ')');
+
+        /*
+        var i = $('.pin-board .item')[0];
+        i.css('top', parseInt(i.css('top'))+1);
+        i.css('top', parseInt(i.css('top'))-1);
+        */
     },
 }
 
@@ -44,8 +58,40 @@ $(document).ready(function() {
 
     // toggle handler
     $('.toggle-horizontal').click(planner.toggle_scene_manager);
+    
+    $('.planner-toolbar.tool').on('mousedown', function(e) {
+        //var char_html = $('.character-holder').html();
+        var new_char = $('.character-holder > .character').clone();
+        new_char.css('position', 'absolute');
+        new_char.removeClass('hidden');
+        new_char.addClass('new-char');
+        new_char.css('top', e.pageY/2);
+        new_char.css('left', e.pageX/2);
+        $('.pin-board').append(new_char);
+        new_char.css('top', parseInt(new_char.css('top'))+1);
+        //$('body').append(new_char);
+        $('.pin-board')
+            .traggable({
+                containment: "parent",
+            })
+            .bind('tragrag', function(e, ui) {
+                console.log(e.pageX, e.pageY);
+            })
+            .bind('dragstop', function(e, ui) {
+                if (ui.offset.left > ($(window).width() - $('.right-column').width() - $(this).width()/2)) {
+                    $(this).remove();
+                }
+            });
+        new_char.trigger(e);
+    });
+    /*
+    $('.character').pep({
+        constrainToParent: true,
+    });
+    */
 
     // board drager
+    /*
     var pin_board = $('.pin-board');
     pin_board.draggable({
         drag: function() {
@@ -58,9 +104,8 @@ $(document).ready(function() {
             if (pin_board_offset.left >= 0) {
                 $(document).trigger("mouseup");
             }
-            */
+            /
         },
     });
-
-
+    */
 });

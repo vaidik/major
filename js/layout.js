@@ -1,7 +1,9 @@
 var layout = {
     adjust_columns: function() {
         // adjust height of .right-column
-        $('.right-column').css('height', $(window).height() - $('.top-row').outerHeight());
+        var columns_height = $(window).height() - $('.top-row').outerHeight();
+        $('.right-column').css('height', columns_height);
+        $('.workspace').css('height', columns_height);
 
         // adjust height of .toggle-vertical
         $('.toggle-holder').css('height', $('.right-column').height());

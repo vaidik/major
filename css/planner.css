@@ -1,0 +1,98 @@
+.planner {
+    width: 100%;
+    height: 100%;
+}
+
+.planner-toolbar.tool {
+    padding: 10px 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.planner-toolbar.tool:hover {
+    background: #eee;
+}
+
+.board {
+    overflow: scroll;
+}
+
+.pin-board {
+    background: url(../img/planner_background.png);
+    position: relative;
+    width: -webkit-calc(1366px * 2);
+    height: -webkit-calc(679px * 2);
+    top: 0;
+    left: 0;
+    transition: 0.3s all ease-out;
+    -o-transition: 0.3s all ease-out;
+    -moz-transition: 0.3s all ease-out;
+    -webkit-transition: 0.3s all ease-out;
+}
+
+.scene-manager {
+    background: #ccc;
+}
+
+.toggle-horizontal {
+    height: 12px;
+    background: #ddd;
+}
+
+.scene-toolbar {
+    height: 114px;
+}
+
+.timeline {
+    font-size: 13px;
+    width: 100%;
+}
+
+.timeline > tr > td > div {
+    height: 33px;
+}
+
+.timeline_block {
+    background: #bbb;
+    width: 150px;
+    border-radius: 6px;
+    height: 0px;
+    padding: -4px;
+    margin-right: 4px;
+    display: inline-block;
+    font-size: 9px;
+    text-align: center;
+}
+
+.timeline_block:hover {
+    background: #A0A0A0;
+}
+
+.add_button img {
+    width: 18px;
+    margin: 0;
+}
+
+.toggle {
+    background: #ddd;
+}
+
+.toggle:hover {
+    background: #eee;
+}
+
+
+#zoom {
+    font-size: 10px;
+}
+
+#zoom:hover {
+    background: none;
+}
+
+#zoom_slider {
+    width: 70%;
+}
+
+#zoom_value {
+    text-align: center;
+}

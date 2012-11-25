@@ -15,6 +15,11 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/planner.css">
+        <link rel="stylesheet" href="css/editor.css">
+        <link rel="stylesheet" href="css/editor.css">
+        <link rel="stylesheet" href="css/autocomplete.css">
+        <link rel="stylesheet" href="css/avgrund.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -70,13 +75,11 @@
                                         <div style="background: #ddd; height: 30px;"><img src="img/add_icon.png"></div>
                                         <div style=" height: 30px;"><img src="img/add_icon.png"></div>
                                         </div>
-<!--
                                         <div style="display: inline-block; width: 40px; height: 100px;">
                                         <div style=" height: 30px;">s</div>
                                         <div style="background: #ddd; height: 30px;">as</div>
                                         <div style=" height: 30px;">as</div>
                                         </div>
-    -->
                                     </td>
                                 </tr>
                             </table>
@@ -85,7 +88,7 @@
                 </div>
                 <div id="editor" style="display: none;">
                     <form method="post" action="show.php">
-                        <textarea name="content" cols="50" rows="15" style="width:100%; height: inherit;">
+                        <textarea name="content" style="height: 100%; width: 100%;">
                             This is some content that will be editable with TinyMCE.
                         </textarea>
                     </form>
@@ -98,7 +101,14 @@
                         <td class="toolbar">
                             <div class="" style="padding: 15px;">
                                 <div>
-                                    <span id="workspace-toggle"><a href="#">Editor</a> <a href="#">Planner</a></a> &nbsp;&nbsp; Research Toolbar</div>
+                                    <span id="workspace-toggle">
+                                        <a href="#">Editor</a> <a href="#" style="font-weight: bold;">Planner</a></a>
+                                    </span>
+                                    &nbsp;
+                                    <span id="toolbar-toggle">
+                                        Research Toolbar
+                                    </span>
+                            </div>
                             </div>
                             <div class="" style="padding: 15px;">
                                 <input type="text" style="margin: 0; width: 90%;" placeholder="Dictionary & Thesaurus">
@@ -112,8 +122,8 @@
                                 <div class="planner-toolbar tool">Object</div>
                                 <div class="planner-toolbar tool">Scene</div>
 
-                                <div class="planner-toolbar tool" id="zoom">
-                                    <div>100% <input type="range" min="100" max="300" step="5" value="100" id="zoom_slider" onchange="planner.zoom_slider_update(this.value)"> 300%</div>
+                                <div class="planner-toolbar" id="zoom">
+                                    <div>50% <input type="range" min="50" max="200" step="5" value="100" id="zoom_slider" onchange="planner.zoom_slider_update(this.value)"> 200%</div>
                                     <div id="zoom_value">100%</div>
                                 </div>
                             </div>
@@ -131,13 +141,18 @@
                     </tr>
                 </table>
             </div>
+            <div class="clear"></div>
         </div>
 
         <!-- All the scripts -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
-        <script src="js/vendor/jquery-ui-1.9.1.custom.min.js"></script>
+        <!--<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>-->
+        <script src="js/vendor/jquery-1.8.2.min.js"></script>
         <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="js/vendor/jquery-ui-1.9.1.custom.min.js"></script>
+        <script src="js/vendor/jquery.avgrund.js"></script>
+        <script src="js/vendor/jquery.pep.js"></script>
+        <script src="js/vendor/jquery-ui.traggable.js"></script>
         <script src="js/vendor/handlebars-1.0.rc.1.js"></script>
         <script type="text/javascript" src="js/vendor/tiny_mce/tiny_mce.js"></script>
         <script src="js/plugins.js"></script>
@@ -145,6 +160,12 @@
         <script src="js/layout.js"></script>
         <script src="js/planner.js"></script>
         <script src="js/editor.js"></script>
+
+    <div class="character-holder">
+        <div style="border: 1px solid black; background-color: #ccc; opacity: 0.7; width: 100px; height: 100px; display: block; position: relative; text-align: center; vertical-align: center;" class="hidden character item">
+            Character
+        </div>
+    </div>
 
     </body>
 </html>

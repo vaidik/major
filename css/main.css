@@ -94,6 +94,10 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+html {
+    background: url(../img/html_bg.png);
+}
+
 .redb { border: 1px solid red; }
 
 /* 
@@ -114,93 +118,6 @@ textarea {
 .workspace {
     overflow: hidden;
     width: 80%;
-}
-
-.planner {
-    width: 101%;
-}
-
-.planner-toolbar.tool {
-    padding: 10px 15px;
-    border-bottom: 2px solid #ddd;
-}
-
-.planner-toolbar.tool:hover {
-    background: #eee;
-}
-
-.board {
-    overflow: hidden;
-}
-
-.pin-board {
-    background: url(../img/planner_background.png);
-    width: 200%;
-    height: 200%;
-    position: relative;
-    top: -50%;
-    left: -50%;
-}
-
-.scene-manager {
-    background: #ccc;
-}
-
-.toggle-horizontal {
-    height: 12px;
-    background: #ddd;
-}
-
-.scene-toolbar {
-    height: 114px;
-}
-
-/* DELETE THIS*/
-
-#modal {
-}
-
-#modal > textarea {
-    width: 95%;
-    height: 70px;
-}
-
-.timeline {
-    font-size: 13px;
-    width: 100%;
-}
-
-.timeline > tr > td > div {
-    height: 33px;
-}
-
-.timeline_block {
-    background: #bbb;
-    width: 150px;
-    border-radius: 6px;
-    height: 0px;
-    padding: -4px;
-    margin-right: 4px;
-    display: inline-block;
-    font-size: 9px;
-    text-align: center;
-}
-
-.timeline_block:hover {
-    background: #A0A0A0;
-}
-
-.add_button img {
-    width: 18px;
-    margin: 0;
-}
-
-.toggle {
-    background: #ddd;
-}
-
-.toggle:hover {
-    background: #eee;
 }
 
 .right-column {
@@ -224,22 +141,6 @@ textarea {
     height: 100%;
 }
 
-#zoom {
-    font-size: 10px;
-}
-
-#zoom:hover {
-    background: none;
-}
-
-#zoom_slider {
-    width: 70%;
-}
-
-#zoom_value {
-    text-align: center;
-}
-
 .local-toolbar {
     background: #ccc;
 }
@@ -248,6 +149,18 @@ textarea {
     height: 400px;
     background: #ccc;
     border-bottom: 2px solid gray;
+}
+
+/* For the close button for modals */
+.avgrund-close {
+    display: block;
+    text-transform: uppercase;
+    color: #555;
+    text-decoration: none;
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 13px;
 }
 
 ::-webkit-scrollbar {
