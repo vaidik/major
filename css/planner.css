@@ -14,10 +14,12 @@
 
 .board {
     overflow: scroll;
+    margin: auto;
 }
 
 .pin-board {
     background: url(../img/planner_background.png);
+    margin: auto;
     position: relative;
     width: -webkit-calc(1366px * 2);
     height: -webkit-calc(679px * 2);

@@ -34,9 +34,7 @@ var planner = {
         }
         $('.pin-board').css('-webkit-transform', 'scale(' + parseInt(val)/100  + ')');
         val = Math.round((parseInt(val) / 100 - 1)*100)/100;
-        console.log('-webkit-calc(679px*' + val + ')');
-        $('.pin-board').css('top', '-webkit-calc(679px*' + val + ')')
-                       .css('left', '-webkit-calc(1366px*' + val + ')');
+        $('.pin-board').css({ '-webkit-transform-origin': 'left top' });
 
         /*
         var i = $('.pin-board .item')[0];
@@ -75,7 +73,6 @@ $(document).ready(function() {
                 containment: "parent",
             })
             .bind('tragrag', function(e, ui) {
-                console.log(e.pageX, e.pageY);
             })
             .bind('dragstop', function(e, ui) {
                 if (ui.offset.left > ($(window).width() - $('.right-column').width() - $(this).width()/2)) {
