@@ -63,22 +63,53 @@ $(document).ready(function() {
         new_char.css('position', 'absolute');
         new_char.removeClass('hidden');
         new_char.addClass('new-char');
-        new_char.css('top', e.pageY/2);
-        new_char.css('left', e.pageX/2);
+        //new_char.css('top', e.pageY/2);
+        //new_char.css('left', e.pageX/2);
+
+        new_char.css('top', e.pageY - new_char.height()/2);
+        new_char.css('left', e.pageX - new_char.width()/2);
+        $('body').append(new_char);
+
+        new_char.draggable();
+        new_char.on('dragstop', function(e) {
+            var x = e.pageX, y = e.pageY;
+            var offset = $('.pin-board').offset();
+            var zoom_val = parseInt($('#zoom_value').html())/100;
+            x = x/zoom_val;
+            y = y/zoom_val;
+            x = x - (offset.left/zoom_val + $(this).width()/2);
+            y = y - (offset.top/zoom_val + $(this).height()/2);
+            var clone = $(this).clone();
+            clone.css('position', 'absolute');
+            clone.css({left: x, top: y});
+            clone.css('-webkit-transform', 'scale(0.7)');
+            clone.css('-webkit-transition', '0.3s all ease-out');
+            $('.pin-board').append(clone);
+            window.setTimeout(function() {
+                clone.css('-webkit-transform', 'scale(1)');
+                window.setTimeout(function() {
+                    clone.css('-webkit-transition', '');
+                }, 310);
+            }, 10);
+            $(this).remove();
+        });
+
+        /*
         $('.pin-board').append(new_char);
         new_char.css('top', parseInt(new_char.css('top'))+1);
         //$('body').append(new_char);
+        */
         $('.pin-board')
             .traggable({
                 containment: "parent",
-            })
-            .bind('tragrag', function(e, ui) {
             })
             .bind('dragstop', function(e, ui) {
                 if (ui.offset.left > ($(window).width() - $('.right-column').width() - $(this).width()/2)) {
                     $(this).remove();
                 }
             });
+        /**/
+
         new_char.trigger(e);
     });
     /*
