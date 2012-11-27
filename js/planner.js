@@ -25,22 +25,131 @@ var planner = {
             scene_toolbar.show();
         }
         layout.adjust_columns();
+        window.setTimeout(function() {
+            $('.pin-board').css({ '-webkit-transform-origin': '0 0' });
+        }, 1);
+        window.setTimeout(function() {
+            $('.pin-board').css({ '-webkit-transform-origin': 'left top' });
+        }, 210);
     },
 
-    zoom_slider_update: function(val) {
+    // updates pin board's scale when zoomed in/out
+    zoom_slider_update: function(val, fake) {
         $('#zoom_value').html(val + '%');
-        if ($('.pin-board .item').length) {
-            $('.pin-board').traggable('changeScale', parseInt(val)/100);
+        var pin_board = $('.pin-board');
+        if ($('.item', pin_board).length) {
+            pin_board.traggable('changeScale', parseInt(val)/100);
+        } else {
+            pin_board.css('-webkit-transform', 'scale(' + parseInt(val)/100  + ')');
         }
-        $('.pin-board').css('-webkit-transform', 'scale(' + parseInt(val)/100  + ')');
-        val = Math.round((parseInt(val) / 100 - 1)*100)/100;
-        $('.pin-board').css({ '-webkit-transform-origin': 'left top' });
+        pin_board.css({ '-webkit-transform-origin': 'left top' });
+        if (fake) {
+            console.log('faking')
+            window.setTimeout(function() {
+                planner.zoom_slider_update(val - 1);
+            }, 1);
+        }
+    },
 
-        /*
-        var i = $('.pin-board .item')[0];
-        i.css('top', parseInt(i.css('top'))+1);
-        i.css('top', parseInt(i.css('top'))-1);
-        */
+    ready_toolbar: function() {
+        // make the planner toolbar ready for use
+        $('.planner-toolbar.tool').on('mousedown', function(e) {
+            var new_char = $('.character-holder > .character').clone();
+            new_char.removeClass('hidden');
+
+            // add item where the tool is clicked
+            $('body').append(new_char);
+
+            new_char.css('top', e.pageY - new_char.height()/2);
+            new_char.css('left', e.pageX - new_char.width()/2);
+
+            new_char.draggable();
+            new_char
+            .on('dragstop', function(e, ui) {
+                if (ui.offset.left > ($(window).width() - $('.right-column').width() - $(this).width()/2)) {
+                    $(this).remove();
+                }
+
+                var pin_board = $('.pin-board');
+                var x = e.pageX, y = e.pageY;
+                var offset = pin_board.offset();
+                var zoom_val = parseInt($('#zoom_value').html())/100;
+
+                x = x/zoom_val;
+                y = y/zoom_val;
+                x = x - (offset.left/zoom_val + $(this).width()/2);
+                y = y - (offset.top/zoom_val + $(this).height()/2);
+
+                var clone = $(this).clone();
+
+                clone.css('position', 'absolute');
+                clone.css({left: x, top: y});
+                clone.css('-webkit-transform', 'scale(0.7)');
+                clone.css('-webkit-transition', '0.3s all ease-out');
+
+                pin_board.append(clone);
+                window.setTimeout(function() {
+                    clone.css('-webkit-transform', 'scale(1)');
+                    window.setTimeout(function() {
+                        clone.css('-webkit-transition', '');
+                    }, 310);
+                }, 10);
+                $(this).remove();
+
+                // Make item name resizable
+                $('.item-name', clone).dblclick(function() {
+                    if ($(this).attr('data-mode') == "view") {
+                        var old_name = $(this).html();
+                        var text_field = '<form><input type="text" class="item-name" name="item-name" value="' + old_name + '"></form>';
+                        $(this).html(text_field);
+                        $('input.item-name', this).focus();
+
+                        $('.item-name form').ready(function() {
+                            $(this).submit(function(e) {
+                                var new_name = $('input[name=item-name]', this).val();
+                                var this_form = $(e.target);
+                                this_form.parent().html(new_name)
+                                //alert(this_form.parent().html());
+                                return false;
+
+                            });
+                        });
+
+                        $(this).attr('data-mode', 'edit');
+                    } else {
+                        ;
+                    }
+                });
+
+                // add context menu here
+                $.contextMenu({
+                    selector: '.pin-board .item',
+                    items: {
+                        edit: {
+                            name: "Edit",
+                            callback: function() { alert(0); },
+                        },
+                        rename: {
+                            name: "Rename",
+                            callback: function() { alert(0); },
+                        },
+                        "delete": {
+                            name: "Delete",
+                            callback: function(key, ops) {
+                                ops.$trigger.remove();
+                            },
+                        },
+                    },
+                });
+            });
+
+            $('.pin-board')
+                .traggable({
+                    containment: "parent",
+                })
+
+            new_char.trigger(e);
+        });
     },
 }
 
@@ -56,84 +165,7 @@ $(document).ready(function() {
 
     // toggle handler
     $('.toggle-horizontal').click(planner.toggle_scene_manager);
-    
-    $('.planner-toolbar.tool').on('mousedown', function(e) {
-        //var char_html = $('.character-holder').html();
-        var new_char = $('.character-holder > .character').clone();
-        new_char.css('position', 'absolute');
-        new_char.removeClass('hidden');
-        new_char.addClass('new-char');
-        //new_char.css('top', e.pageY/2);
-        //new_char.css('left', e.pageX/2);
 
-        new_char.css('top', e.pageY - new_char.height()/2);
-        new_char.css('left', e.pageX - new_char.width()/2);
-        $('body').append(new_char);
-
-        new_char.draggable();
-        new_char.on('dragstop', function(e) {
-            var x = e.pageX, y = e.pageY;
-            var offset = $('.pin-board').offset();
-            var zoom_val = parseInt($('#zoom_value').html())/100;
-            x = x/zoom_val;
-            y = y/zoom_val;
-            x = x - (offset.left/zoom_val + $(this).width()/2);
-            y = y - (offset.top/zoom_val + $(this).height()/2);
-            var clone = $(this).clone();
-            clone.css('position', 'absolute');
-            clone.css({left: x, top: y});
-            clone.css('-webkit-transform', 'scale(0.7)');
-            clone.css('-webkit-transition', '0.3s all ease-out');
-            $('.pin-board').append(clone);
-            window.setTimeout(function() {
-                clone.css('-webkit-transform', 'scale(1)');
-                window.setTimeout(function() {
-                    clone.css('-webkit-transition', '');
-                }, 310);
-            }, 10);
-            $(this).remove();
-        });
-
-        /*
-        $('.pin-board').append(new_char);
-        new_char.css('top', parseInt(new_char.css('top'))+1);
-        //$('body').append(new_char);
-        */
-        $('.pin-board')
-            .traggable({
-                containment: "parent",
-            })
-            .bind('dragstop', function(e, ui) {
-                if (ui.offset.left > ($(window).width() - $('.right-column').width() - $(this).width()/2)) {
-                    $(this).remove();
-                }
-            });
-        /**/
-
-        new_char.trigger(e);
-    });
-    /*
-    $('.character').pep({
-        constrainToParent: true,
-    });
-    */
-
-    // board drager
-    /*
-    var pin_board = $('.pin-board');
-    pin_board.draggable({
-        drag: function() {
-            var pin_board = $('.pin-board');
-            var pin_board_offset = pin_board.offset();
-            /*
-            if (($('.pin-board').width() + pin_board_offset.left - $('.board').width()) <= 0) {
-                $(document).trigger("mouseup");
-            }
-            if (pin_board_offset.left >= 0) {
-                $(document).trigger("mouseup");
-            }
-            /
-        },
-    });
-    */
+    planner.ready_toolbar();
+   
 });
