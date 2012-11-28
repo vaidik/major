@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/dictionary.css">
         <link rel="stylesheet" href="css/planner.css">
         <link rel="stylesheet" href="css/editor.css">
         <link rel="stylesheet" href="css/editor.css">
@@ -152,23 +153,47 @@
         <script src="js/vendor/jquery-1.8.2.min.js"></script>
         <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
         <script src="js/vendor/jquery-ui-1.9.2.custom.js"></script>
-        <script src="js/vendor/jquery.avgrund.js"></script>
+        <script src="js/plugins.js"></script>
         <script src="js/vendor/jquery-ui.traggable.js"></script>
         <script src="js/vendor/jquery.contextMenu.js"></script>
         <script src="js/vendor/handlebars-1.0.rc.1.js"></script>
         <script type="text/javascript" src="js/vendor/tiny_mce/tiny_mce.js"></script>
+        <script src="js/bootstrap.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
         <script src="js/layout.js"></script>
         <script src="js/planner.js"></script>
         <script src="js/editor.js"></script>
+        <script src="js/dictionary.js"></script>
 
-        <div class="character-holder">
-            <div class="character item hidden">
-                <div class="item-icon"></div>
-                <div class="item-name" data-mode="view">New Character</div>
+        <div class="hidden" id="hidden">
+            <div class="character-holder">
+                <div class="character item hidden">
+                    <div class="item-icon"></div>
+                    <div class="item-name" data-mode="view">New Character</div>
+                </div>
             </div>
         </div>
+
+        <div class="modal-holder">
+            <div class="modal hide fade">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <span class="modal-label"></span>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+
+        <script id="modal-dictionary" type="text/x-handlebars-template">
+            <div>
+                <input type="text" name="word" value="{{ word }}" style="margin: 0;"> <a hred="#"" class="btn btn-info search">Search</a>
+            </div>
+            <div class="dictionary-content">
+                {{ body }}
+            </div>
+        </script>
 
     </body>
 </html>

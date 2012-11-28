@@ -1,0 +1,27 @@
+.dictionary-content {
+    overflow-y: scroll;
+    height: 250px;
+    margin-top: 16px;
+}
+
+.dictionary-word {
+    font-size: 17px;
+}
+
+.dictionary-label {
+    border-left: dotted 1px #BBB;
+    padding-left: 0.5em;
+    color: #666;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.dictionary-phonetic {
+    font-size: 13px;
+    margin-left: 6px;
+    font-family: "Doulos SIL","Gentium","TITUS Cyberbit Basic","Junicode","Aborigonal Serif","Arial Unicode MS","Lucida Sans Unicode","Chrysanthi Unicode";
+}
+
+.dictionary-content ol {
+    margin-top: 16px;
+}

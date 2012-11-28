@@ -31,23 +31,5 @@ var main = {
     },
 
     modal: function(selector, options) {
-        var ops = {
-            height: 'auto',
-            width: 622,
-            showClose: true,
-            showCloseText: 'Close',
-            closeByEscape: true,
-            closeByDocument: true,
-            onBlurContainer: '',
-            openOnEvent: true,
-            setEvent: 'click',
-            template: '',
-        };
-
-        for (op in options) {
-            ops[op] = options[op];
-        }
-
-        $(selector).avgrund(ops);
     },
 };
