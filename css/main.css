@@ -151,6 +151,11 @@ html {
     border-bottom: 2px solid gray;
 }
 
+#w-toggle {
+    margin: 15px;
+    margin-top: 0;
+}
+
 
 /* Bootstrap Fixtures */
 .modal {

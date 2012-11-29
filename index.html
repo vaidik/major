@@ -14,15 +14,17 @@
 
         <link rel="stylesheet" href="css/vendor/jquery-ui/jquery-ui-1.9.2.custom.css">
         <link rel="stylesheet" href="css/vendor/jquery-contextmenu/jquery.contextMenu.css">
+        <link rel="stylesheet" href="css/vendor/bootstrap-toggle-buttons/bootstrap-toggle-buttons.css">
+        <link rel="stylesheet" href="css/vendor/select2/select2.css">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/dictionary.css">
         <link rel="stylesheet" href="css/planner.css">
         <link rel="stylesheet" href="css/editor.css">
-        <link rel="stylesheet" href="css/editor.css">
+        <link rel="stylesheet" href="css/research.css">
         <link rel="stylesheet" href="css/autocomplete.css">
-        <link rel="stylesheet" href="css/avgrund.css">
+        <link rel="stylesheet" href="css/fixtures.css">
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -33,7 +35,7 @@
 
         <div class="main">
             <div class="workspace">
-                <div class="planner">
+                <div class="planner workspace-holder" id="planner">
                     <div class="board">
                         <div class="pin-board"></div>
                     </div>
@@ -88,12 +90,45 @@
                         </div>
                     </div>
                 </div>
-                <div id="editor" style="display: none;">
+                <div id="editor" class="workspace-holder" style="display: none;">
                     <form method="post" action="#" id="editor-form">
-                        <textarea name="content" style="height: 100%; width: 100%;">
+                        <textarea name="content" style="height: 100%; width: -webkit-calc(100% + 2px)">
                             This is some content that will be editable with TinyMCE.
                         </textarea>
                     </form>
+                </div>
+                <div id="research" class="workspace-holder" style="display: none;">
+                    <div id="research-toolbar" style="padding-left: 30px; padding-right: 41px;">
+                        <table style="height: 100%; width: 100%;">
+                            <tr>
+                                <td class="add"></td>
+                                <td valign="middle" style="padding-left: 20px;">
+                                    <select id="filter" style="width: 120px;">
+                                        <option value="AL">All</option>
+                                        <option value="AL">Pictures</option>
+                                        <option value="WY">Videos</option>
+                                        <option value="WY">Audios</option>
+                                        <option value="WY">Documents</option>
+                                        <option value="WY">Notes</option>
+                                        <option value="WY">Links</option>
+                                    </select>
+                                    &nbsp; &nbsp;
+                                    <select id="actions" style="width: 120px;">
+                                        <option value="AL">Actions</option>
+                                        <option value="AL">Tag</option>
+                                        <option value="AL">Delete</option>
+                                    </select>
+                                </td>
+                                <td class="add" style="border: 0; border-left: 1px solid #eee; background-position: -479px 10px;"></td>
+                            </tr>
+                        </table>
+                        <!--
+                        -->
+                    </div>
+                    <div id="research-holder">
+                        <div id="research-list">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="right-column" style="float: right;">
@@ -102,19 +137,14 @@
                         <td class="toggle-vertical toggle"></td>
                         <td class="toolbar">
                             <div class="" style="padding: 15px;">
-                                <div>
-                                    <span id="workspace-toggle">
-                                        <a href="#">Editor</a> <a href="#" style="font-weight: bold;">Planner</a></a>
-                                    </span>
-                                    &nbsp;
-                                    <span id="toolbar-toggle">
-                                        Research Toolbar
-                                    </span>
-                            </div>
-                            </div>
-                            <div class="" style="padding: 15px;">
                                 <input type="text" style="margin: 0; width: 90%;" placeholder="Dictionary & Thesaurus">
                                 <input type="submit" style="margin-left: -35px; background: url('img/search_icon.png'); width: 25px; border: 0;" value="">
+                            </div>
+                            <div id="w-toggle">
+                                <input type="checkbox">
+                            </div>
+                            <div id="w-toggle">
+                                <button class="btn" onclick="main.toggle_workspace('research')" style="width:100%;">Data Collection</button>
                             </div>
                             <div class="local-toolbar">
                                 <div class="planner-toolbar tool">Theme</div>
@@ -153,16 +183,18 @@
         <script src="js/vendor/jquery-1.8.2.min.js"></script>
         <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
         <script src="js/vendor/jquery-ui-1.9.2.custom.js"></script>
-        <script src="js/plugins.js"></script>
         <script src="js/vendor/jquery-ui.traggable.js"></script>
         <script src="js/vendor/jquery.contextMenu.js"></script>
         <script src="js/vendor/handlebars-1.0.rc.1.js"></script>
+        <script src="js/vendor/bootstrap/bootstrap.js"></script>
+        <script src="js/vendor/tiny_mce/tiny_mce.js"></script>
+        <script src="js/vendor/bootstrap-toggle-buttons/jquery.toggle.buttons.js"></script>
         <script src="js/vendor/jquery.timeago/jquery.timeago.js"></script>
-        <script type="text/javascript" src="js/vendor/tiny_mce/tiny_mce.js"></script>
-        <script src="js/bootstrap.js"></script>
+        <script src="js/vendor/select2/select2.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
         <script src="js/layout.js"></script>
+        <script src="js/research.js"></script>
         <script src="js/planner.js"></script>
         <script src="js/vendor/sisyphus/sisyphus.min.js"></script>
         <script src="js/editor.js"></script>
@@ -195,6 +227,38 @@
             <div class="dictionary-content">
                 {{ body }}
             </div>
+        </script>
+
+        <script id="research-list-template" type="text/x-handlebars-template">
+            <ul id="clip-list" class="unstyled" style="display: block; ">
+                <li class="clip">
+                    <div class="display">
+                        <div class="research-content">
+                            <div class="drag"></div>
+                            <span class="research-date"><abbr class="timeago" title="2012-11-24T04:04:50.000Z">5d</abbr></span>
+                            <a href="http://pydanny.com/case-study-url-design-for-petcheatsheetscom.html" target="_blank" class="research-title">Case Study: URL Design for petcheatsheets.com</a>
+            
+                            <p class="domain"> 
+                                <i class="fav" style="background-image:url('https://www.google.com/s2/u/0/favicons?domain=pydanny.com');"></i>                
+                                <span>pydanny.com</span>
+                    
+                                <span>
+                                    <span class="comment-count"><a href="" title="Comment"><i class="icon icon-comment"></i>Add comment</a></span>
+                                </span>
+                                <span><a href="#" class="clip-like isOwn" rel="tooltip" data-original-title="You can't like your own clip"><i class="icon icon-like"></i><span>Like</span></a></span>
+
+                            </p>
+                        </div>
+                        <ul class="research-actions">
+                            <li class="clip-reader"><a href="" rel="tooltip" data-original-title="View in Reader">Reader</a></li>
+                            <li class="clip-edit"><a href="" rel="tooltip" data-original-title="Edit">Edit</a></li>
+                            <li class="clip-read-later "><a href="" rel="tooltip" data-original-title="Mark as Read Later">Read Later</a></li>
+                            <li class="clip-star"><a href="" rel="tooltip" data-original-title="Star">Star</a></li>
+                            <li class="clip-destroy"><a href="" rel="tooltip" data-original-title="Remove">×</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
         </script>
 
     </body>

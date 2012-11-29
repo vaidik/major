@@ -1,0 +1,117 @@
+#research {
+    height: 100%;
+    background: white;
+}
+
+#research-toolbar {
+    height: 40px;
+    background: white;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 0px #EEE inset;
+}
+
+.add {
+    width: 40px;
+    text-align: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    background: url(../img/glyphicons-halflings.png);
+    background-repeat: no-repeat;
+    background-size: 1750%;
+    background-position: -630px -141px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.add:hover {
+    opacity: 1;
+}
+
+#research-holder {
+    background: url('../img/light_bg.jpg');
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#research-list {
+    margin: 30px;
+    margin-top: -1px;
+    box-shadow: 0px 0px 20px #CCC;
+    background: white;
+}
+
+#research-list > ul {
+    position: relative;
+    margin-top: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.15em;
+    min-height: 350px;
+    background: white;
+    border-top: 1px solid #DEDEDE;
+    list-style: none;
+}
+
+#research-list > ul li {
+    padding: 18px 30px;
+    position: relative;
+    border-bottom: 1px solid #E8EAED;
+}
+
+.research-content {
+    min-height: 38px;
+    color: #444;
+    font-weight: bold;
+    text-decoration: none;
+    position: relative;
+}
+
+.research-date {
+    font-weight: normal;
+    font-size: 12px;
+    color: #848484;
+    position: absolute;
+    top: 0px;
+    right: 0;
+}
+
+.research-title {
+    color: #2E3C3F;
+    line-height: 1.3;
+    font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 520px;
+    display: block;
+}
+
+.research-actions {
+    position: absolute;
+    list-style-type: none;
+    top: 13px;
+    opacity: 0;
+    right: 3px;
+    margin: 0;
+    border: 0;
+    padding: 6px 6px 5px;
+    background: none;
+    -moz-transition-property: opacity;
+    -webkit-transition-property: opacity;
+    -o-transition-property: opacity;
+    transition-property: opacity;
+    -moz-transition-duration: 0.1s;
+    -webkit-transition-duration: 0.1s;
+    -o-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+}
+
+p.domain {
+    margin-top: 5px;
+    line-height: 20px;
+    font-size: 13px;
+    color: #606060;
+    font-weight: normal;
+}
