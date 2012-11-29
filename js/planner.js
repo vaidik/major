@@ -65,6 +65,16 @@ var planner = {
 
             new_char.draggable();
             new_char
+            .on('mouseup', function(e, ui) {
+                if (!ui) {
+                    var ui = {};
+                    ui.offset = $(this).offset();
+                }
+                if (ui.offset.left > ($(window).width() - $('.right-column').width() - $(this).width()/2)) {
+                    
+                    $(this).remove();
+                }
+            })
             .on('dragstop', function(e, ui) {
                 if (ui.offset.left > ($(window).width() - $('.right-column').width() - $(this).width()/2)) {
                     $(this).remove();
@@ -127,11 +137,11 @@ var planner = {
                     items: {
                         edit: {
                             name: "Edit",
-                            callback: function() { alert(0); },
+                            callback: function() { ; },
                         },
                         rename: {
                             name: "Rename",
-                            callback: function() { alert(0); },
+                            callback: function() { ; },
                         },
                         "delete": {
                             name: "Delete",
