@@ -33,12 +33,13 @@ var Dictionary = function() {
         var template = Handlebars.compile($("#modal-dictionary").html());
         var source = template(context);
         $('.modal .modal-body').html(source);
-        $('.modal .modal-footer').html('<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>');
 
         $('.modal').modal('show');
 
-        $('.modal-body .search').click(function(e) {
-            define($('.modal-body input[name=word]').val());
+        $('.modal').on('shown', function() {
+            $('.modal-body .search').click(function(e) {
+                define($('.modal-body input[name=word]').val());
+            });
         });
     };
 
@@ -75,6 +76,7 @@ var Dictionary = function() {
             },
         });
 
+        /*
         $(document).bind('contextmenu', function(e) {
             var range = window.getSelection().getRangeAt(0).cloneRange().getClientRects();
             if (range.length) {
@@ -84,6 +86,7 @@ var Dictionary = function() {
                 }
             }
         });
+        */
 
     }
 
@@ -107,4 +110,12 @@ dictionary = new Dictionary();
 
 $(document).ready(function() {
     dictionary.readyContextMenu();
+
+    $('#dictionary-form').submit(function() {
+        var val = $('input[type=text]', this).val();
+        if (val != "") {
+            dictionary.find(val);
+        }
+        return false;
+    });
 });
