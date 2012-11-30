@@ -15,12 +15,13 @@
     width: 40px;
     text-align: center;
     border-right: 1px solid rgba(0, 0, 0, 0.15);
-    background: url(../img/glyphicons-halflings.png);
     background-repeat: no-repeat;
     background-size: 1750%;
     background-position: -630px -141px;
     opacity: 0.7;
     cursor: pointer;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .add:hover {
