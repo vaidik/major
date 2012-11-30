@@ -146,9 +146,8 @@ html {
 }
 
 .global-toolbar {
-    height: 400px;
-    background: #ccc;
-    border-bottom: 2px solid gray;
+    background: #F8F8F8;
+    border-bottom: 2px solid #BDBDBD;
 }
 
 #w-toggle {
@@ -156,8 +155,20 @@ html {
     margin-top: 0;
 }
 
+input[type=file] {
+    position: absolute;
+    top: -500px;
+}
+
 
 /* Bootstrap Fixtures */
+.modal textarea, .modal input[type=text] {
+    width: calc(100% - 14px) !important;
+    width: -webkit-calc(100% - 14px) !important;
+    width: -moz-calc(100% - 14px) !important;
+    width: -o-calc(100% - 14px) !important;
+}
+
 .modal {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;

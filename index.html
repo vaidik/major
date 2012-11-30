@@ -101,7 +101,7 @@
                     <div id="research-toolbar" style="padding-left: 30px; padding-right: 41px;">
                         <table style="height: 100%; width: 100%;">
                             <tr>
-                                <td class="add">+</td>
+                                <td class="add" id="add_research">+</td>
                                 <td valign="middle" style="padding-left: 20px;">
                                     <select id="filter" style="width: 120px;">
                                         <option value="AL">All</option>
@@ -136,17 +136,21 @@
                     <tr>
                         <td class="toggle-vertical toggle"></td>
                         <td class="toolbar">
-                            <div class="" style="padding: 15px;">
-                                <form id="dictionary-form" action="#" method="GET" style="margin: 0;">
-                                    <input type="text" style="margin: 0; width: 90%;" placeholder="Dictionary & Thesaurus">
-                                    <input type="submit" style="margin-left: -35px; background: url('img/search_icon.png'); width: 25px; border: 0;" value="">
-                                </form>
-                            </div>
-                            <div id="w-toggle">
-                                <input type="checkbox">
-                            </div>
-                            <div id="w-toggle">
-                                <button class="btn" onclick="main.toggle_workspace('research')" style="width:100%;">Data Collection</button>
+                            <div class="global-toolbar">
+                                <div class="" style="padding: 15px;">
+                                    <form id="dictionary-form" action="#" method="GET" style="margin: 0;">
+                                        <div class="input-prepend">
+                                            <span class="add-on"><i class="icon-search"></i></span>
+                                            <input id="inputIcon" type="text" style="margin: 0; width: 166px;" placeholder="Dictionary & Thesaurus">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div id="w-toggle">
+                                    <input type="checkbox">
+                                </div>
+                                <div id="w-toggle">
+                                    <button class="btn" onclick="main.toggle_workspace('research')" style="width:100%;">Data Collection</button>
+                                </div>
                             </div>
                             <div class="local-toolbar">
                                 <div class="planner-toolbar tool">Theme</div>
@@ -156,19 +160,9 @@
                                 <div class="planner-toolbar tool">Object</div>
                                 <div class="planner-toolbar tool">Scene</div>
 
-                                <div class="planner-toolbar" id="zoom">
+                                <div class="planner-toolbar tool" id="zoom">
                                     <div>50% <input type="range" min="50" max="200" step="5" value="100" id="zoom_slider" onchange="planner.zoom_slider_update(this.value)"> 200%</div>
                                     <div id="zoom_value">100%</div>
-                                </div>
-                            </div>
-                            <div class="global-toolbar">
-                                <div>
-                                    <table width="100%;">
-                                        <tr>
-                                            <td class="planner-toolbar tool">References</td>
-                                            <td class="planner-toolbar tool" width="30"><img src="img/add_icon.png"></td>
-                                        </tr>
-                                    </table>
                                 </div>
                             </div>
                         </td>
@@ -218,16 +212,48 @@
                     <span class="modal-label"></span>
                 </div>
                 <div class="modal-body"></div>
-                <div class="modal-footer"></div>
+                <div class="modal-footer">
+                    <span class="removable"></span>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
             </div>
         </div>
 
         <script id="modal-dictionary" type="text/x-handlebars-template">
             <div>
-                <input type="text" name="word" value="{{ word }}" style="margin: 0;"> <a hred="#"" class="btn btn-info search">Search</a>
+                <form>
+                    <input type="text" name="word" value="{{ word }}" style="margin: 0;"> <a href="#"" class="btn btn-info search">Search</a>
+                </form>
             </div>
             <div class="dictionary-content">
                 {{ body }}
+            </div>
+        </script>
+
+        <script id="modal-research-add" type="text/x-handlebars-template">
+            <div id="research-add">
+                <ul>
+                    <li><a href="#" class="btn" data-action="file">Upload File</a></li>
+                    <li><a href="#" class="btn" data-action="note">Create Note</a></li>
+                    <li><a href="#" class="btn" data-action="link">Save Link</a></li>
+                </ul>
+            </div>
+            <div id="research-add-object" class="hidden">
+                <div id="research-add-link" class="hidden">
+                    <input type="text" name="link" placeholder="Enter your link here...">
+                </div>
+                <div id="research-add-file" class="hidden">
+                    <input type="file" name="file" id="file">
+                    <div class="input-append">
+                        <input id="file_textbox" class="input-large" type="text" readonly="readonly">
+                        <a class="btn" id="file_button" onclick="$('input[id=file]').click();">Browse</a>
+                    </div>
+                </div>
+                <div id="research-note">
+                    <textarea style="height: 200px;" name="note" placeholder="Enter your notes here..."></textarea>
+                </div>
+                <div id="research-tags">
+                </div>
             </div>
         </script>
 

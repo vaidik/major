@@ -4,14 +4,14 @@ $(document).ready(function() {
     });
 
     $('#w-toggle').toggleButtons({
-        width: 200,
+        width: 208,
         label: {
             enabled: "Editor",
             disabled: "Planner"
         },
         style: {
-            enabled: "primary",
-            disabled: "primary"
+            enabled: "info",
+            disabled: "info"
         },
         onChange: function($el, status, e) {
             if (main.workspace_current == "planner") {
@@ -21,6 +21,11 @@ $(document).ready(function() {
             }
             main.toggle_workspace(main.workspace_current);
         },
+    });
+
+    $('.modal').on('hidden', function() {
+        $('.modal-label', this).html('');
+        $('.modal-body', this).html('');
     });
 });
 
@@ -56,3 +61,7 @@ var main = {
         }
     },
 };
+
+String.prototype.toTitleCase = function() {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
