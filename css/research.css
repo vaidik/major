@@ -84,7 +84,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 520px;
+    width: 40%;
     display: block;
 }
 
@@ -108,12 +108,26 @@
     transition-duration: 0.1s;
 }
 
-p.domain {
+p.summary {
     margin-top: 5px;
     line-height: 20px;
     font-size: 13px;
     color: #606060;
     font-weight: normal;
+}
+
+i.fav {
+    background: url("../img/glyphicons-halflings.png");
+    margin: -3px 2px 0 0;
+    background-repeat: no-repeat;
+    line-height: 16px;
+    background-position: 0px -71px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    display: inline-block;
+    border-radius: 1px;
+    vertical-align: middle;
 }
 
 #research-add {

@@ -153,16 +153,27 @@
                                 </div>
                             </div>
                             <div class="local-toolbar">
-                                <div class="planner-toolbar tool">Theme</div>
-                                <div class="planner-toolbar tool">Plot</div>
-                                <div class="planner-toolbar tool">Setting</div>
-                                <div class="planner-toolbar tool">Character</div>
-                                <div class="planner-toolbar tool">Object</div>
-                                <div class="planner-toolbar tool">Scene</div>
+                                <div id="planner-toolbar">
+                                    <div class="planner-toolbar tool">Theme</div>
+                                    <div class="planner-toolbar tool">Plot</div>
+                                    <div class="planner-toolbar tool">Setting</div>
+                                    <div class="planner-toolbar tool">Character</div>
+                                    <div class="planner-toolbar tool">Object</div>
+                                    <div class="planner-toolbar tool">Scene</div>
 
-                                <div class="planner-toolbar tool" id="zoom">
-                                    <div>50% <input type="range" min="50" max="200" step="5" value="100" id="zoom_slider" onchange="planner.zoom_slider_update(this.value)"> 200%</div>
-                                    <div id="zoom_value">100%</div>
+                                    <div class="planner-toolbar" id="zoom">
+                                        <div>50% <input type="range" min="50" max="200" step="5" value="100" id="zoom_slider" onchange="planner.zoom_slider_update(this.value)"> 200%</div>
+                                        <div id="zoom_value">100%</div>
+                                    </div>
+                                </div>
+                                <div id="editor-toolbar" style="display: none;">
+                                    <div class="btn-group">
+                                        <button name="size" type="button" class="btn" id="add-chapter">Add Chapter</button>
+                                        <button name="size" type="button" class="btn">Add Part</button>
+                                    </div>
+                                    <ul id="chapter-list">
+                                        <li>Chapter 1</li>
+                                    </ul>
                                 </div>
                             </div>
                         </td>
@@ -239,8 +250,12 @@
                 </ul>
             </div>
             <div id="research-add-object" class="hidden">
+                <form>
+                <div id="research-name">
+                    <input type="text" name="name" placeholder="Name">
+                </div>
                 <div id="research-add-link" class="hidden">
-                    <input type="text" name="link" placeholder="Enter your link here...">
+                    <input type="text" name="link" placeholder="Link">
                 </div>
                 <div id="research-add-file" class="hidden">
                     <input type="file" name="file" id="file">
@@ -250,30 +265,36 @@
                     </div>
                 </div>
                 <div id="research-note">
-                    <textarea style="height: 200px;" name="note" placeholder="Enter your notes here..."></textarea>
+                    <textarea style="height: 200px;" name="note" placeholder="Notes..."></textarea>
                 </div>
                 <div id="research-tags">
+                    <input type="text" name="tags" placeholder="Tags">
                 </div>
+                </form>
             </div>
         </script>
 
         <script id="research-list-template" type="text/x-handlebars-template">
             <ul id="clip-list" class="unstyled" style="display: block; ">
+                {{#each research}}
                 <li class="clip">
                     <div class="display">
                         <div class="research-content">
                             <div class="drag"></div>
-                            <span class="research-date"><abbr class="timeago" title="2012-11-24T04:04:50.000Z">5d</abbr></span>
-                            <a href="http://pydanny.com/case-study-url-design-for-petcheatsheetscom.html" target="_blank" class="research-title">Case Study: URL Design for petcheatsheets.com</a>
+                            <span class="research-date">{{#if time}}<abbr class="timeago" title="{{toISOdate time }}">{{toISOdate time }}</abbr>{{/if}}</span>
+                            <a href="http://pydanny.com/case-study-url-design-for-petcheatsheetscom.html" target="_blank" class="research-title">{{ title }}</a>
             
-                            <p class="domain"> 
-                                <i class="fav" style="background-image:url('https://www.google.com/s2/u/0/favicons?domain=pydanny.com');"></i>                
-                                <span>pydanny.com</span>
+                            <p class="summary horizontal-clamp"> 
+                                <i class="fav" {{#if link}}style="background-image: url(https://www.google.com/s2/u/0/favicons?domain={{ domain }}); background-position: 0 0px;"{{/if}}>
+                                </i> 
+                                <span>{{ research }}</span>
                     
+                                <!--
                                 <span>
                                     <span class="comment-count"><a href="" title="Comment"><i class="icon icon-comment"></i>Add comment</a></span>
                                 </span>
                                 <span><a href="#" class="clip-like isOwn" rel="tooltip" data-original-title="You can't like your own clip"><i class="icon icon-like"></i><span>Like</span></a></span>
+                                -->
 
                             </p>
                         </div>
@@ -286,6 +307,7 @@
                         </ul>
                     </div>
                 </li>
+                {{/each}}
             </ul>
         </script>
 

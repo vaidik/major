@@ -34,6 +34,9 @@ $('#editor').load(function() {
 });
 
 var main = {
+    // All data objects are stored in this
+    localData: {},
+
     workspace_current: "planner",
     toggle_workspace: function(current) {
         current = current.toLowerCase();
@@ -51,9 +54,13 @@ var main = {
         $('.workspace-holder').hide();
         if (current == "editor") {
             $('#editor').show();
+            $('#editor-toolbar').show();
+            $('#planner-toolbar').hide();
             toggle_workspace_link();
         } else if (current == "planner") {
             $('#planner').show();
+            $('#editor-toolbar').hide();
+            $('#planner-toolbar').show();
             toggle_workspace_link();
         } else if (current == "research") {
             $('#research').show();

@@ -160,6 +160,13 @@ input[type=file] {
     top: -500px;
 }
 
+.horizontal-clamp {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 60%;
+}
+
 
 /* Bootstrap Fixtures */
 .modal textarea, .modal input[type=text] {
