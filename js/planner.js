@@ -106,8 +106,35 @@ var planner = {
                 }, 10);
                 $(this).remove();
 
+                function rename(ops) {
+                    var $this = $('.item-name', ops.$trigger);
+                    if ($this.attr('data-mode') == "view") {
+                        var old_name = $this.html();
+                        var text_field = '<form><input type="text" class="item-name" name="item-name" value="' + old_name + '"></form>';
+                        $this.html(text_field);
+                        $('input.item-name', $this).focus();
+
+                        $('.item-name form').ready(function() {
+                            $this.submit(function(e) {
+                                var new_name = $('input[name=item-name]', $this).val();
+                                var this_form = $(e.target);
+                                this_form.parent().html(new_name)
+                                $this.attr('data-mode', 'view');
+                                //alert(this_form.parent().html());
+                                return false;
+
+                            });
+                        });
+
+                        $this.attr('data-mode', 'edit');
+                    } else {
+                        ;
+                    }
+                }
+
                 // Make item name resizable
                 $('.item-name', clone).dblclick(function() {
+                    console.log(e);
                     if ($(this).attr('data-mode') == "view") {
                         var old_name = $(this).html();
                         var text_field = '<form><input type="text" class="item-name" name="item-name" value="' + old_name + '"></form>';
@@ -141,7 +168,9 @@ var planner = {
                         },
                         rename: {
                             name: "Rename",
-                            callback: function() { ; },
+                            callback: function(key,ops) {
+                                rename(ops);
+                            },
                         },
                         "delete": {
                             name: "Delete",
