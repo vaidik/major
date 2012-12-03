@@ -58,6 +58,7 @@ var planner = {
             var text = $(this).text().toLowerCase();
 
             $('.item-icon', new_char).css(tools_css[text]);
+            $('.item-name', new_char).html('New ' + text.toTitleCase());
             new_char.attr('data-tool', text);
             new_char.removeClass('hidden');
 
@@ -95,7 +96,6 @@ var planner = {
                 y = y - (offset.top/zoom_val + $(this).height()/2);
 
                 var text = $(this).attr('data-tool');
-                console.log(text);
                 if (text == 'theme') {
                     var char = new Theme(x, y);
                 } else if (text == 'character') {
@@ -135,10 +135,6 @@ var Tool = function(x, y) {
         clone.css({left: x, top: y});
         clone.css('-webkit-transform', 'scale(0.7)');
         clone.css('-webkit-transition', '0.3s all ease-out');
-        //$('.item-icon', clone).css({'background': 'url(' + this.background_image + '?qeq=qwe) no-repeat',
-        //                            'background-position': this.background_pos,
-        //                            'background-size': this.background_size});
-        console.log(this.css);
         $('.item-icon', clone).css(this.css);
         a = $('.item-icon', clone);
 
@@ -242,9 +238,6 @@ var tools_css = {
 var Character = function(x, y) {
     this.x = x;
     this.y = y;
-    this.background_image = '../img/tools/characters.png';
-    this.background_pos = '100% 100%';
-    this.background_size = '400%';
     this.label = 'Character';
     this.css = tools_css.character;
     this.init(x, y);
@@ -253,9 +246,6 @@ var Character = function(x, y) {
 var Theme = function(x, y) {
     this.x = x;
     this.y = y;
-    this.background_image = '../img/tools/theme.png';
-    this.background_pos = '0px 0px';
-    this.background_size = '100%';
     this.label = 'Theme';
     this.css = tools_css.theme;
     this.init(x,y);
@@ -264,9 +254,6 @@ var Theme = function(x, y) {
 var Setting = function(x, y) {
     this.x = x;
     this.y = y;
-    this.background_image = '../img/tools/setting.png';
-    this.background_pos = '0px 0px';
-    this.background_size = '100%';
     this.label = 'Setting';
     this.css = tools_css.setting;
     this.init(x,y);
@@ -275,9 +262,6 @@ var Setting = function(x, y) {
 var Scene = function(x, y) {
     this.x = x;
     this.y = y;
-    this.background_image = '../img/tools/scene.png';
-    this.background_pos = '0px 0px';
-    this.background_size = '90%';
     this.label = 'Scene';
     this.css = tools_css.scene;
     this.init(x,y);
@@ -286,9 +270,6 @@ var Scene = function(x, y) {
 var Obj = function(x, y) {
     this.x = x;
     this.y = y;
-    this.background_image = '../img/tools/object.png';
-    this.background_pos = '0px 0px';
-    this.background_size = '90%';
     this.label = 'Object';
     this.css = tools_css.object;
     this.init(x,y);
@@ -297,9 +278,6 @@ var Obj = function(x, y) {
 var Plot = function(x, y) {
     this.x = x;
     this.y = y;
-    this.background_image = '../img/tools/plot.png';
-    this.background_pos = '0px 0px';
-    this.background_size = '90%';
     this.label = 'Plot';
     this.css = tools_css.plot;
     this.init(x,y);
