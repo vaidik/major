@@ -208,32 +208,32 @@ var Tool = function(x, y) {
 
 var tools_css = {
     character: {
-        background: 'url(../img/tools/characters.png) no-repeat',
+        background: 'url(img/tools/characters.png) no-repeat',
         'background-position': '100% 100%',
         'background-size': '400%',
     },
     theme: {
-        background: 'url(../img/tools/theme.png) no-repeat',
+        background: 'url(img/tools/theme.png) no-repeat',
         'background-position': 'center',
         'background-size': '90%',
     },
     setting: {
-        background: 'url(../img/tools/setting.png) no-repeat',
+        background: 'url(img/tools/setting.png) no-repeat',
         'background-position': 'center',
         'background-size': '90%',
     },
     scene: {
-        background: 'url(../img/tools/scene.png) no-repeat',
+        background: 'url(img/tools/scene.png) no-repeat',
         'background-position': 'center',
         'background-size': '90%',
     },
     object: {
-        background: 'url(../img/tools/object.png) no-repeat',
+        background: 'url(img/tools/object.png) no-repeat',
         'background-position': 'center',
         'background-size': '90%',
     },
     plot: {
-        background: 'url(../img/tools/plot.png) no-repeat',
+        background: 'url(img/tools/plot.png) no-repeat',
         'background-position': 'center',
         'background-size': '90%',
     },
