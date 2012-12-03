@@ -20,6 +20,8 @@ var research = {
             }
         }
 
+        research.sort(function(x, y){ return new Date(x.time) < new Date(y.time) });
+
         $('#research-list').html(source({research: research}));
         $('abbr.timeago').timeago();
     },
