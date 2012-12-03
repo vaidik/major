@@ -298,6 +298,7 @@
 
                             </p>
                         </div>
+                        <!--
                         <ul class="research-actions">
                             <li class="clip-reader"><a href="" rel="tooltip" data-original-title="View in Reader">Reader</a></li>
                             <li class="clip-edit"><a href="" rel="tooltip" data-original-title="Edit">Edit</a></li>
@@ -305,10 +306,19 @@
                             <li class="clip-star"><a href="" rel="tooltip" data-original-title="Star">Star</a></li>
                             <li class="clip-destroy"><a href="" rel="tooltip" data-original-title="Remove">×</a></li>
                         </ul>
+                        -->
                     </div>
                 </li>
                 {{/each}}
             </ul>
+        </script>
+
+        <script id="tool-modal-character" type="text/x-handlebars-template">
+            <textarea name="personality" placeholder="Personality Type: This includes the personality traits of the character."></textarea>
+            <textarea name="physical_description" placeholder="Physical description..."></textarea>
+            <textarea name="conflict" placeholder="Conflict: The driving force behind the actions of the character. His agenda and the subsequent actions."></textarea>
+            <textarea name="revelation" placeholder="Revelation: How the character is revealed to the other characters and what they think of him/her."></textarea>
+            <textarea name="notes" placeholder="Notes..."></textarea>
         </script>
 
     </body>

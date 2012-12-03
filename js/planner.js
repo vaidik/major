@@ -145,8 +145,16 @@ var Tool = function(x, y) {
                 clone.css('-webkit-transition', '');
             }, 310);
         }, 10);
+        this.modal();
     }
 
+    this.modal = function() {
+        var modal = $('.modal');
+        var body = $('#tool-modal-' + this.label.toLowerCase()).html();
+        $('.modal-label', modal).html('New ' + this.label);
+        $('.modal-body', modal).html(body);
+        modal.modal('show');
+    }
 
     this.prepareMenu = function() {
         var rename = function(ops) {
