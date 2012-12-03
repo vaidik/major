@@ -145,18 +145,22 @@ var Tool = function(x, y) {
                 clone.css('-webkit-transition', '');
             }, 310);
         }, 10);
-        this.modal();
-    }
 
-    this.modal = function() {
-        var modal = $('.modal');
-        var body = $('#tool-modal-' + this.label.toLowerCase()).html();
-        $('.modal-label', modal).html('New ' + this.label);
-        $('.modal-body', modal).html(body);
-        modal.modal('show');
+        this.prepareMenu();
     }
 
     this.prepareMenu = function() {
+        var edit_modal = this.modal;
+        var label = this.label;
+
+        var modal = function() {
+            var modal = $('.modal');
+            var body = $('#tool-modal-' + label.toLowerCase()).html();
+            $('.modal-label', modal).html('New ' + label);
+            $('.modal-body', modal).html(body);
+            modal.modal('show');
+        }
+
         var rename = function(ops) {
             var $this = $('.item-name', ops.$trigger);
             if ($this.attr('data-mode') == "view") {
@@ -188,7 +192,7 @@ var Tool = function(x, y) {
             items: {
                 edit: {
                     name: "Edit",
-                    callback: function() { ; },
+                    callback: function() { modal(); },
                 },
                 rename: {
                     name: "Rename",
@@ -207,7 +211,7 @@ var Tool = function(x, y) {
     }
 
     //this.init(x, y);
-    this.prepareMenu();
+    //this.prepareMenu();
 }
 
 var tools_css = {
