@@ -5,7 +5,19 @@
 
 /* Containers */
 .defaultSkin table {direction:ltr;background:transparent}
-.defaultSkin iframe {display:block;}
+.defaultSkin iframe {
+    display:block;
+    box-shadow: 0px 0px 20px #CCC;
+    margin: auto;
+    width: -webkit-calc(100% - 60px) !important;
+    width: calc(100% - 60px) !important;
+    width: -moz-calc(100% - 60px) !important;
+    width: -o-calc(100% - 60px) !important;
+}
+#content_toolbargroup {
+    margin-top: 5px;
+}
+.mceFirst[role=presentation] { height: 40px; }
 .defaultSkin .mceToolbar {height:26px}
 .defaultSkin .mceLeft {text-align:left}
 .defaultSkin .mceRight {text-align:right}

@@ -10,11 +10,11 @@ var research = {
         var dump = ds.dump();
         for (var j=0; j<types.length; j++) {
             if (dump[types[j]]) {
-                for (var i=0; i<dump[types[j]].length; i++) {
-                    var pos = research.push(dump[types[j]][i])-1;
+                for (r in dump[types[j]]) {
+                    var pos = research.push(dump[types[j]][r])-1;
                     research[pos].type = types[j];
                     if (types[j] == 'links') {
-                        research[pos].domain = dump[types[j]][i].link.split('://')[1].split('/')[0];
+                        research[pos].domain = dump[types[j]][r].link.split('://')[1].split('/')[0];
                     }
                 }
             }
@@ -87,29 +87,33 @@ Function.prototype.inherit = function(Parent) {
     return this;
 }
 
-
 var DataStorage = function(dataKey) {
     this.dataKey = dataKey || 'localData';
     this.localData = {};
+    this.localObjects = [];
 
-    var localData = JSON.parse(localStorage.getItem(this.dataKey));
+    try {
+        var localData = JSON.parse(localStorage.getItem(this.dataKey));
+    } catch (e) {
+        var localData = null;
+    }
     if (localData !== null) {
         this.localData = localData;
     }
 
-    this.push = function(type, data) {
+    this.push = function(type, key, val) {
         if (!this.localData.hasOwnProperty(type)) {
-            this.localData[type] = [];
+            this.localData[type] = {};
         }
-        this.localData[type].push(data);
+        this.localData[type][key] = val;
         this.save();
     }
 
-    this.exists = function(type, object) {
-        object = JSON.stringify(object);
+    /*
+    this.exists = function(type, ID) {
         try {
             for (var i=0; i<this.localData[type].length; i++) {
-                if (JSON.stringify(this.localData[type][i]) == object) {
+                if (this.localData[type][i].ID == ID) {
                     return i;
                 }
             }
@@ -120,11 +124,13 @@ var DataStorage = function(dataKey) {
 
         return -1;
     }
+    */
 
-    this.delete = function(type, object) {
-        var i = this.exists(type, object);
-        if (i != -1) {
-            this.localData[type].splice(i, 1);
+    this.delete = function(type, ID) {
+        //var i = this.exists(type, ID);
+        //if (i != -1) {
+        if (this.localData[type][ID]) {
+            delete this.localData[type][ID];
             this.save();
             return true;
         }
@@ -144,44 +150,78 @@ var DataStorage = function(dataKey) {
 var ds = new DataStorage();
 
 // Generic Item which will be extended for everything possible.
-research.Item = function(research, tags) {
-    if (typeof research == "string") {
-        this.object = {
-            research: research || '',
-            tags: tags || '',
-        };
-    } else {
-        this.object = research;
+research.Item = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
     }
 
-    this.dataKey = 'object';
-
-    this.getObject = function() {
-        return this.object;
-    }
+    this.dataKey = 'item';
 
     this.toString = function() {
         return JSON.stringify(this.object);
     }
 
-    this.save = function() {
-        this.object.time = new Date();
-        if (ds.exists(this.dataKey, this.getObject()) == -1) {
-            ds.push(this.dataKey, this.getObject());
+    this.delReference = function() {
+        if (this._ID) {
+            delete ds.localObjects.splice(this._ID, 1);
+        } else {
+            console.log('missing _ID');
         }
+    }
+
+    this.setAttr = function() {
+        if (this.$dom) {
+            $(this.$dom).attr('data-id', this.time);
+        }
+    }
+
+    this.save = function() {
+        var exists = 0;
+        try {
+            exists = ds.localData[this.dataKey][this.ID];
+        } catch(e) {;}
+
+        if (!exists) {
+            var object = this.object;
+            this.object.ID = this.ID;
+            ds.push(this.dataKey, this.ID, object);
+        }
+        this.object.time = new Date().getTime();
         ds.save();
     };
 }
 
-research.Note = function(object) {
-    this.object = object;
+research.Note = function(obj, $dom) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
+    this.$dom = $dom;
     this.dataKey = 'notes';
 }
 
 research.Note.inherit(research.Item);
 
-research.Link = function(object) {
-    this.object = object;
+research.Link = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
     this.dataKey = 'links';
 }
 

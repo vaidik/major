@@ -27,7 +27,7 @@ var editor = {
         });
 
         // add a saving status label
-        $('<div style="position: absolute;left: 400px;top: 4px;" id="saved-status"></div>').insertAfter('#editor-form textarea');
+        $('<div style="position: absolute;left: 400px;top: 10px;" id="saved-status"></div>').insertAfter('#editor-form textarea');
 
         this.tinymce_update_interval = window.setInterval(function() {
             $("#editor-form textarea").val(tinyMCE.activeEditor.getContent())
@@ -54,5 +54,9 @@ $(document).ready(function() {
         onRestore: function() {
         },
         onRelease: function() {},
+    });
+
+    $('#add-chapter').click(function() {
+        $('#chapter-list').append('<li>New Chapter</li>');
     });
 });

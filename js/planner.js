@@ -96,18 +96,21 @@ var planner = {
                 y = y - (offset.top/zoom_val + $(this).height()/2);
 
                 var text = $(this).attr('data-tool');
+                var offset = {};
+                offset.x = x;
+                offset.y = y;
                 if (text == 'theme') {
-                    var char = new Theme(x, y);
+                    var char = new planner.Theme(offset);
                 } else if (text == 'character') {
-                    var char = new Character(x, y);
+                    var char = new planner.Character(offset);
                 } else if (text == 'setting') {
-                    var char = new Setting(x, y);
+                    var char = new planner.Setting(offset);
                 } else if (text == 'scene') {
-                    var char = new Scene(x, y);
+                    var char = new planner.Scene(offset);
                 } else if (text == 'object') {
-                    var char = new Obj(x, y);
+                    var char = new planner.Obj(offset);
                 } else if (text == 'plot') {
-                    var char = new Plot(x, y);
+                    var char = new planner.Plot(offset);
                 }
                 $(this).remove();
             });
@@ -124,10 +127,13 @@ var planner = {
     },
 }
 
-var Tool = function(x, y) {
+var Tool = function(object) {
+    this.dataKey = 'tool';
+
     this.init = function(x, y) {
         var pin_board = $('.pin-board');
-        var clone = $('.character-holder > .character').clone();
+        this.$dom = $('.character-holder > .character').clone();
+        var clone = this.$dom;
         $('.item-name', clone).text('New ' + this.label);
         clone.removeClass('hidden');
 
@@ -135,6 +141,7 @@ var Tool = function(x, y) {
         clone.css({left: x, top: y});
         clone.css('-webkit-transform', 'scale(0.7)');
         clone.css('-webkit-transition', '0.3s all ease-out');
+        clone.attr('data-id', this.time);
         $('.item-icon', clone).css(this.css);
         a = $('.item-icon', clone);
 
@@ -147,19 +154,57 @@ var Tool = function(x, y) {
         }, 10);
 
         this.prepareMenu();
+
+        clone.bind('dblclick', this.modal);
+        this.update({});
+    }
+
+    this.update = function(object) {
+        if (!object) {
+            return;
+        }
+
+        this.object = object;
+        this.object.x = this.$dom.css('left');
+        this.object.y = this.$dom.css('top');
+        this.save();
     }
 
     this.prepareMenu = function() {
-        var edit_modal = this.modal;
         var label = this.label;
+        var update = this.update;
 
-        var modal = function() {
+        var modal = function(e, ops) {
+            if (typeof e == "object") {
+                var _ID = parseInt($(this).attr('data-id'));
+            } else {
+                var _ID = parseInt($(ops.$trigger).attr('data-id'));
+            }
+
             var modal = $('.modal');
             var body = $('#tool-modal-' + label.toLowerCase()).html();
             $('.modal-label', modal).html('New ' + label);
             $('.modal-body', modal).html(body);
+            $('.modal-footer .removable').append('<button class="btn btn-info save" data-dismiss="modal" aria-hidden="true">Save</button>');
             modal.modal('show');
+
+            $('.modal-footer .save', modal).click({_ID: _ID}, function(e) {
+                var $modal_body = $('.modal-body');
+
+                var form_array = $('form', $modal_body).serializeArray();
+                var form_obj = {};
+                for (var i=0; i<form_array.length; i++) {
+                    form_obj[form_array[i].name] = form_array[i].value;
+                }
+
+                for (var i=0; i<ds.localObjects.length; i++) {
+                    if (ds.localObjects[i]._ID == e.data._ID) {
+                        ds.localObjects[i].update(form_obj);
+                    }
+                }
+            });
         }
+        this.modal = modal;
 
         var rename = function(ops) {
             var $this = $('.item-name', ops.$trigger);
@@ -192,7 +237,7 @@ var Tool = function(x, y) {
             items: {
                 edit: {
                     name: "Edit",
-                    callback: function() { modal(); },
+                    callback: modal,
                 },
                 rename: {
                     name: "Rename",
@@ -213,6 +258,8 @@ var Tool = function(x, y) {
     //this.init(x, y);
     //this.prepareMenu();
 }
+
+Tool.inherit(research.Item);
 
 var tools_css = {
     character: {
@@ -247,60 +294,126 @@ var tools_css = {
     },
 };
 
-var Character = function(x, y) {
-    this.x = x;
-    this.y = y;
+planner.Character = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
+    this.dataKey = 'characters';
+
+    this.x = obj.x;
+    this.y = obj.y;
     this.label = 'Character';
     this.css = tools_css.character;
-    this.init(x, y);
+    this.init(this.x, this.y);
 }
 
-var Theme = function(x, y) {
-    this.x = x;
-    this.y = y;
+planner.Theme = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
+    this.dataKey = 'themes';
+
+    this.x = obj.x;
+    this.y = obj.y;
     this.label = 'Theme';
     this.css = tools_css.theme;
-    this.init(x,y);
+    this.init(this.x, this.y);
 }
 
-var Setting = function(x, y) {
-    this.x = x;
-    this.y = y;
+planner.Setting = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
+    this.dataKey = 'settings';
+
+    this.x = obj.x;
+    this.y = obj.y;
     this.label = 'Setting';
     this.css = tools_css.setting;
-    this.init(x,y);
+    this.init(this.x, this.y);
 }
 
-var Scene = function(x, y) {
-    this.x = x;
-    this.y = y;
+planner.Scene = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
+    this.dataKey = 'scenes';
+
+    this.x = obj.x;
+    this.y = obj.y;
     this.label = 'Scene';
     this.css = tools_css.scene;
-    this.init(x,y);
+    this.init(this.x, this.y);
 }
 
-var Obj = function(x, y) {
-    this.x = x;
-    this.y = y;
+planner.Obj = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
+    this.dataKey = 'objects';
+
+    this.x = obj.x;
+    this.y = obj.y;
     this.label = 'Object';
     this.css = tools_css.object;
-    this.init(x,y);
+    this.init(this.x, this.y);
 }
 
-var Plot = function(x, y) {
-    this.x = x;
-    this.y = y;
+planner.Plot = function(obj) {
+    this.object = obj;
+    try {
+        this.ID = obj.ID || new Date().getTime();
+        this.time = obj.time || new Date().getTime();
+    } catch(e) {
+        this.ID = new Date().getTime();
+        this.time = new Date().getTime();
+    }
+
+    this.dataKey = 'plots';
+
+    this.x = obj.x;
+    this.y = obj.y;
     this.label = 'Plot';
     this.css = tools_css.plot;
-    this.init(x,y);
+    this.init(this.x, this.y);
 }
 
-Character.inherit(Tool);
-Theme.inherit(Tool);
-Setting.inherit(Tool);
-Scene.inherit(Tool);
-Obj.inherit(Tool);
-Plot.inherit(Tool);
+planner.Character.inherit(Tool);
+planner.Theme.inherit(Tool);
+planner.Setting.inherit(Tool);
+planner.Scene.inherit(Tool);
+planner.Obj.inherit(Tool);
+planner.Plot.inherit(Tool);
 
 $(document).ready(function() {
     // adjust board
@@ -317,4 +430,27 @@ $(document).ready(function() {
 
     planner.ready_toolbar();
    
+    var dump = ds.dump();
+    var tools = {
+        'characters': 'Character',
+        'themes': 'Theme',
+        'plots': 'Plot',
+        'settings': 'Setting',
+        'objects': 'Obj',
+        'scenes': 'scene',
+    };
+    for (t in tools) {
+        for (r in dump[t]) {
+            try {
+                c = new planner[tools[t]](dump[t][r]);
+                c.update();
+            } catch (e) {
+                ;
+            }
+        }
+    }
+    $('.pin-board')
+        .traggable({
+            containment: "parent",
+        })
 });

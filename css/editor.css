@@ -5,4 +5,13 @@
 #editor form {
     height: 100%; 
     width: 100%;
+    background: url('../img/light_bg.jpg');
+}
+
+#editor-toolbar .btn-group {
+    width: 100%;
+}
+
+#editor-toolbar .btn-group .btn {
+    width: 50%;
 }

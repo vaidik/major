@@ -94,10 +94,6 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-html {
-    background: url(../img/html_bg.png);
-}
-
 .redb { border: 1px solid red; }
 
 /* 

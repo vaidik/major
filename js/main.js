@@ -26,6 +26,7 @@ $(document).ready(function() {
     $('.modal').on('hidden', function() {
         $('.modal-label', this).html('');
         $('.modal-body', this).html('');
+        $('.modal-footer .removable', this).html('');
     });
 });
 
