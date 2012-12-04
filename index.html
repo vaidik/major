@@ -277,7 +277,7 @@
         <script id="research-list-template" type="text/x-handlebars-template">
             <ul id="clip-list" class="unstyled" style="display: block; ">
                 {{#each research}}
-                <li class="clip">
+                <li class="clip" data-id="{{ time }}">
                     <div class="display">
                         <div class="research-content">
                             <div class="drag"></div>
@@ -312,14 +312,16 @@
                 {{/each}}
             </ul>
         </script>
-
+    
         <script id="tool-modal-character" type="text/x-handlebars-template">
-            <input type="text" name="name" placeholder="Name"> 
-            <textarea name="personality" placeholder="Personality Type: This includes the personality traits of the character."></textarea>
-            <textarea name="physical_description" placeholder="Physical description..."></textarea>
-            <textarea name="conflict" placeholder="Conflict: The driving force behind the actions of the character. His agenda and the subsequent actions."></textarea>
-            <textarea name="revelation" placeholder="Revelation: How the character is revealed to the other characters and what they think of him/her."></textarea>
-            <textarea name="notes" placeholder="Notes..."></textarea>
+            <form>
+                <input type="text" name="name" placeholder="Name"> 
+                <textarea name="personality" placeholder="Personality Type: This includes the personality traits of the character."></textarea>
+                <textarea name="physical_description" placeholder="Physical description..."></textarea>
+                <textarea name="conflict" placeholder="Conflict: The driving force behind the actions of the character. His agenda and the subsequent actions."></textarea>
+                <textarea name="revelation" placeholder="Revelation: How the character is revealed to the other characters and what they think of him/her."></textarea>
+                <textarea name="notes" placeholder="Notes..."></textarea>
+            </form>
         </script>
 
         <script id="tool-modal-theme" type="text/x-handlebars-template">
