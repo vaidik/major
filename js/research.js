@@ -126,6 +126,23 @@ var DataStorage = function(dataKey) {
     }
     */
 
+    this.deleteItem = function(ID) {
+        var delKey = 0;
+        ID = parseInt(ID);
+
+        for (key in this.localData) {
+            for (k in this.localData[key]) {
+                if (k == ID) {
+                    delKey = key;
+                }
+            }
+        }
+
+        if (delKey) {
+            delete this.localData[delKey][ID];
+        }
+    }
+
     this.delete = function(type, ID) {
         //var i = this.exists(type, ID);
         //if (i != -1) {
@@ -176,7 +193,15 @@ research.Item = function(obj) {
 
     this.setAttr = function() {
         if (this.$dom) {
-            $(this.$dom).attr('data-id', this.time);
+            $(this.$dom).attr('data-id', this.ID);
+        }
+    }
+
+    this.merge = function(obj) {
+        for (key in obj) {
+            if (typeof obj[key] != "function") {
+                this.object[key] = obj[key];
+            }
         }
     }
 
@@ -190,7 +215,11 @@ research.Item = function(obj) {
             var object = this.object;
             this.object.ID = this.ID;
             ds.push(this.dataKey, this.ID, object);
+        } else {
+            exists.x = this.object.x;
+            exists.y = this.object.y;
         }
+
         this.object.time = new Date().getTime();
         ds.save();
     };

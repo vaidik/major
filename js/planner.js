@@ -131,6 +131,15 @@ var Tool = function(object) {
     this.dataKey = 'tool';
 
     this.init = function(x, y) {
+        if (this.object.created) {
+            var $dom = $('[data-id=' + this.object.ID + ']');
+            this.object.x = $dom.css('left');
+            this.object.y = $dom.css('top');
+            this.$dom = $dom;
+            this.update({});
+            return;
+        }
+
         var pin_board = $('.pin-board');
         this.$dom = $('.character-holder > .character').clone();
         var clone = this.$dom;
@@ -141,7 +150,7 @@ var Tool = function(object) {
         clone.css({left: x, top: y});
         clone.css('-webkit-transform', 'scale(0.7)');
         clone.css('-webkit-transition', '0.3s all ease-out');
-        clone.attr('data-id', this.time);
+        clone.attr('data-id', this.ID);
         $('.item-icon', clone).css(this.css);
         a = $('.item-icon', clone);
 
@@ -164,10 +173,19 @@ var Tool = function(object) {
             return;
         }
 
-        this.object = object;
+        this.merge(object);
         this.object.x = this.$dom.css('left');
         this.object.y = this.$dom.css('top');
         this.save();
+
+        var emit_object = $.extend({}, this.object);
+        emit_object.dataKey = this.dataKey;
+
+        try { 
+            tools.emit('create', emit_object);
+        } catch (e) {
+            console.log('Not connected to WebSockets Server.');
+        };
     }
 
     this.prepareMenu = function() {
@@ -248,7 +266,15 @@ var Tool = function(object) {
                 "delete": {
                     name: "Delete",
                     callback: function(key, ops) {
+                        var ID = ops.$trigger.attr('data-id');
                         ops.$trigger.remove();
+                        ds.deleteItem(ID);
+                        ds.save();
+                        try {
+                            tools.emit('remove', {'ID': ID});
+                        } catch (e) {
+                            console.log('Not connected to WebSockets Server.');
+                        };
                     },
                 },
             },
@@ -437,7 +463,7 @@ $(document).ready(function() {
         'plots': 'Plot',
         'settings': 'Setting',
         'objects': 'Obj',
-        'scenes': 'scene',
+        'scenes': 'Scene',
     };
     for (t in tools) {
         for (r in dump[t]) {
@@ -453,4 +479,27 @@ $(document).ready(function() {
         .traggable({
             containment: "parent",
         })
+
+    $('.item').mouseup(function() {
+        console.log('asdasd');
+        var $this = $(this);
+        var id = $this.attr('data-id');
+        var dump = ds.dump();
+
+        for (k in dump) {
+            for (j in dump[k]) {
+                if (dump[k][j].ID == parseInt(id)) {
+                    var obj = $.extend({}, dump[k][j]);
+                    obj.created = true;
+
+                    var key = k.toTitleCase().substr(0, k.length-1);
+                    if (k == 'objects') {
+                        key = 'Obj';
+                    }
+                    a = new planner[key](obj);
+                }
+            }
+        }
+
+    });
 });
