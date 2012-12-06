@@ -249,9 +249,9 @@ var Tool = function(object) {
             }
         }
 
-        $.contextMenu('destroy');
         $.contextMenu({
             selector: '.pin-board .item',
+            position: function($menu, x, y){ console.log(x, y); $menu.$menu.css({top: y+2, left: x+2});},
             items: {
                 edit: {
                     name: "Edit",
@@ -481,7 +481,6 @@ $(document).ready(function() {
         })
 
     $('.item').mouseup(function() {
-        console.log('asdasd');
         var $this = $(this);
         var id = $this.attr('data-id');
         var dump = ds.dump();
