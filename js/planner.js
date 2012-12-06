@@ -51,6 +51,19 @@ var planner = {
         }
     },
 
+    show_only: function(tool) {
+        $('.pin-board .item').hide();
+        if (tool) {
+            $('.pin-board .item.' + tool).show();
+        } else {
+            planner.show_all();
+        }
+    },
+
+    show_all: function() {
+        $('.pin-board .item').show();
+    },
+
     ready_toolbar: function() {
         // make the planner toolbar ready for use
         var mousedown_callback = function(e) {
@@ -148,6 +161,7 @@ var Tool = function(object) {
         var clone = this.$dom;
         $('.item-name', clone).text(this.object.data.name);
         clone.removeClass('hidden');
+        clone.addClass(this.dataKey);
 
         clone.css('position', 'absolute');
         clone.css({left: x, top: y});
