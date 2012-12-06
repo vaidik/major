@@ -143,6 +143,31 @@ var DataStorage = function(dataKey) {
         }
     }
 
+    this.getItem = function(ID) {
+        var dump = this.localData;
+        var id = parseInt(ID);
+
+        for (k in dump) {
+            for (j in dump[k]) {
+                if (dump[k][j].ID == id) {
+                    var obj = dump[k][j];
+
+                    var key = k.toTitleCase().substr(0, k.length-1);
+                    if (k == 'objects') {
+                        key = 'Obj';
+                    }
+                    obj.created = true;
+                    var a = new planner[key](obj);
+                    delete a.created;
+                }
+            }
+        }
+
+        if (a) {
+            return a;
+        }
+    }
+
     this.delete = function(type, ID) {
         //var i = this.exists(type, ID);
         //if (i != -1) {
@@ -168,7 +193,6 @@ var ds = new DataStorage();
 
 // Generic Item which will be extended for everything possible.
 research.Item = function(obj) {
-    this.object = obj;
     try {
         this.ID = obj.ID || new Date().getTime();
         this.time = obj.time || new Date().getTime();

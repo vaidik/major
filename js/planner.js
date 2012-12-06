@@ -112,6 +112,7 @@ var planner = {
                 } else if (text == 'plot') {
                     var char = new planner.Plot(offset);
                 }
+                char.update({}, true, 'create');
                 $(this).remove();
             });
 
@@ -131,19 +132,21 @@ var Tool = function(object) {
     this.dataKey = 'tool';
 
     this.init = function(x, y) {
-        if (this.object.created) {
+        if (this.object.created || this.object.old) {
             var $dom = $('[data-id=' + this.object.ID + ']');
             this.object.x = $dom.css('left');
             this.object.y = $dom.css('top');
             this.$dom = $dom;
-            this.update({});
+
+            delete this.object.created;
+            delete this.object.old;
             return;
         }
 
         var pin_board = $('.pin-board');
         this.$dom = $('.character-holder > .character').clone();
         var clone = this.$dom;
-        $('.item-name', clone).text('New ' + this.label);
+        $('.item-name', clone).text(this.object.data.name);
         clone.removeClass('hidden');
 
         clone.css('position', 'absolute');
@@ -165,10 +168,9 @@ var Tool = function(object) {
         this.prepareMenu();
 
         clone.bind('dblclick', this.modal);
-        this.update({});
     }
 
-    this.update = function(object) {
+    this.update = function(object, notify, e) {
         if (!object) {
             return;
         }
@@ -181,11 +183,17 @@ var Tool = function(object) {
         var emit_object = $.extend({}, this.object);
         emit_object.dataKey = this.dataKey;
 
-        try { 
-            tools.emit('create', emit_object);
-        } catch (e) {
-            console.log('Not connected to WebSockets Server.');
-        };
+        if (notify) {
+            if (!e) {
+                var e = 'create';
+            }
+            try { 
+                tools.emit(e, emit_object);
+            } catch (e) {
+                console.log('Not connected to WebSockets Server.');
+            };
+            delete this.old;
+        }
     }
 
     this.prepareMenu = function() {
@@ -239,6 +247,21 @@ var Tool = function(object) {
                         var this_form = $(e.target);
                         this_form.parent().html(new_name)
                         $this.attr('data-mode', 'view');
+                        
+                        var item = ds.getItem($this.parent().attr('data-id'));
+                        item.object.data.name = new_name;
+                        item.update({});
+                        ds.save();
+
+                        var emit_object = $.extend({}, item.object);
+                        emit_object.dataKey = item.dataKey;
+
+                        try {
+                            tools.emit('update', emit_object);
+                        } catch (e) {
+                            console.log('Not connected to WebSockets Server.');
+                        }
+
                         return false;
                     });
                 });
@@ -251,7 +274,7 @@ var Tool = function(object) {
 
         $.contextMenu({
             selector: '.pin-board .item',
-            position: function($menu, x, y){ console.log(x, y); $menu.$menu.css({top: y+2, left: x+2});},
+            position: function($menu, x, y){ $menu.$menu.css({top: y+2, left: x+2});},
             items: {
                 edit: {
                     name: "Edit",
@@ -336,6 +359,11 @@ planner.Character = function(obj) {
     this.y = obj.y;
     this.label = 'Character';
     this.css = tools_css.character;
+
+    if (!this.object.data) {
+        this.object.data = { name: 'New ' + this.label };
+    }
+
     this.init(this.x, this.y);
 }
 
@@ -355,6 +383,11 @@ planner.Theme = function(obj) {
     this.y = obj.y;
     this.label = 'Theme';
     this.css = tools_css.theme;
+
+    if (!this.object.data) {
+        this.object.data = { name: 'New ' + this.label };
+    }
+
     this.init(this.x, this.y);
 }
 
@@ -374,6 +407,11 @@ planner.Setting = function(obj) {
     this.y = obj.y;
     this.label = 'Setting';
     this.css = tools_css.setting;
+
+    if (!this.object.data) {
+        this.object.data = { name: 'New ' + this.label };
+    }
+
     this.init(this.x, this.y);
 }
 
@@ -393,6 +431,11 @@ planner.Scene = function(obj) {
     this.y = obj.y;
     this.label = 'Scene';
     this.css = tools_css.scene;
+
+    if (!this.object.data) {
+        this.object.data = { name: 'New ' + this.label };
+    }
+
     this.init(this.x, this.y);
 }
 
@@ -412,6 +455,11 @@ planner.Obj = function(obj) {
     this.y = obj.y;
     this.label = 'Object';
     this.css = tools_css.object;
+
+    if (!this.object.data) {
+        this.object.data = { name: 'New ' + this.label };
+    }
+
     this.init(this.x, this.y);
 }
 
@@ -431,6 +479,11 @@ planner.Plot = function(obj) {
     this.y = obj.y;
     this.label = 'Plot';
     this.css = tools_css.plot;
+
+    if (!this.object.data) {
+        this.object.data = { name: 'New ' + this.label };
+    }
+
     this.init(this.x, this.y);
 }
 
@@ -469,7 +522,7 @@ $(document).ready(function() {
         for (r in dump[t]) {
             try {
                 c = new planner[tools[t]](dump[t][r]);
-                c.update();
+                c.update({});
             } catch (e) {
                 ;
             }
@@ -485,20 +538,8 @@ $(document).ready(function() {
         var id = $this.attr('data-id');
         var dump = ds.dump();
 
-        for (k in dump) {
-            for (j in dump[k]) {
-                if (dump[k][j].ID == parseInt(id)) {
-                    var obj = $.extend({}, dump[k][j]);
-                    obj.created = true;
-
-                    var key = k.toTitleCase().substr(0, k.length-1);
-                    if (k == 'objects') {
-                        key = 'Obj';
-                    }
-                    a = new planner[key](obj);
-                }
-            }
-        }
+        var a = ds.getItem(id);
+        a.update({});
 
     });
 });

@@ -5,6 +5,7 @@ tools.emit('join', { my: 'data' });
 
 // when a tool is added
 tools.on('create', function(data) {
+    console.log('create', data);
     var dump = ds.dump();
     var dataKey = data.dataKey;
     delete data.dataKey;
@@ -25,7 +26,23 @@ tools.on('create', function(data) {
             var key = 'Obj';
         }
         var t = new planner[key](data);
+        t.update({});
     }
+});
+
+// when contents of a tool are updated
+tools.on('update', function(data) {
+    
+    delete data.x;
+    delete data.y;
+    console.log('update', data);
+
+    var obj = ds.getItem(data.ID);
+    for (key in data) {
+        obj.object[key] = data[key];
+    }
+    obj.update({});
+    $('.item-name', obj.$dom).html(data.data.name);
 });
 
 // when a tool is removed
@@ -34,4 +51,8 @@ tools.on('remove', function(data) {
     $('[data-id=' + data.ID + ']').remove();
     ds.deleteItem(data.ID);
     ds.save();
+});
+
+tools.on('move', function(data) {
+    console.log('moved', data);
 });

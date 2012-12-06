@@ -34,6 +34,20 @@ tools.connection = function(socket) {
 
 var clients = {};
 
+var publish = function(e, data, sender_socket) {
+    if (!sender_socket) {
+        sender_socket = {id: 0};
+    }
+
+    for (id in clients) {
+        if (id != sender_socket.id) {
+           clients[id].emit(e, data);
+        } else {
+            console.log('>>>>>>>>> Found it');
+        }
+    }
+}
+
 var tools = io
     .of('/tools')
     .on('connection', function(socket) {
@@ -45,9 +59,17 @@ var tools = io
 
         socket.on('create', function(data) {
             console.log('created a tool');
+            publish('create', data, this);
+            /*
             for (id in clients) {
                 clients[id].emit('create', data);
             }
+            */
+        });
+
+        socket.on('update', function(data) {
+            console.log('updated a tool');
+            publish('update', data, this);
         });
 
         socket.on('remove', function(data) {
