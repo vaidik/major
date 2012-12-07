@@ -24,6 +24,8 @@ var research = {
 
         $('#research-list').html(source({research: research}));
         $('abbr.timeago').timeago();
+
+        $('[rel=tooltip]').tipsy({fade: true});
     },
 
     add_modal: function() {
@@ -108,23 +110,6 @@ var DataStorage = function(dataKey) {
         this.localData[type][key] = val;
         this.save();
     }
-
-    /*
-    this.exists = function(type, ID) {
-        try {
-            for (var i=0; i<this.localData[type].length; i++) {
-                if (this.localData[type][i].ID == ID) {
-                    return i;
-                }
-            }
-        } catch(e) {
-            console.log('Error occurred', e);
-            return -1;
-        }
-
-        return -1;
-    }
-    */
 
     this.deleteItem = function(ID) {
         var delKey = 0;

@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="css/vendor/jquery-contextmenu/jquery.contextMenu.css">
         <link rel="stylesheet" href="css/vendor/bootstrap-toggle-buttons/bootstrap-toggle-buttons.css">
         <link rel="stylesheet" href="css/vendor/select2/select2.css">
+        <link rel="stylesheet" href="css/vendor/jquery-tipsy/tipsy.css">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
@@ -192,6 +193,7 @@
         <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
         <script src="js/vendor/jquery-ui-1.9.2.custom.js"></script>
         <script src="js/vendor/jquery-ui.traggable.js"></script>
+        <script src="js/vendor/jquery-tipsy/jquery.tipsy.js"></script>
         <script src="js/vendor/handlebars-1.0.rc.1.js"></script>
         <script src="js/vendor/bootstrap/bootstrap.js"></script>
         <script src="js/vendor/tiny_mce/tiny_mce.js"></script>
@@ -283,12 +285,12 @@
         <script id="research-list-template" type="text/x-handlebars-template">
             <ul id="clip-list" class="unstyled" style="display: block; ">
                 {{#each research}}
-                <li class="clip" data-id="{{ time }}">
+                <li class="clip" data-id="{{ ID }}">
                     <div class="display">
                         <div class="research-content">
                             <div class="drag"></div>
                             <span class="research-date">{{#if time}}<abbr class="timeago" title="{{toISOdate time }}">{{toISOdate time }}</abbr>{{/if}}</span>
-                            <a href="http://pydanny.com/case-study-url-design-for-petcheatsheetscom.html" target="_blank" class="research-title">{{ title }}</a>
+                            <a href="{{ link }}" target="_blank" class="research-title">{{ title }}</a>
             
                             <p class="summary horizontal-clamp"> 
                                 <i class="fav" {{#if link}}style="background-image: url(https://www.google.com/s2/u/0/favicons?domain={{ domain }}); background-position: 0 0px;"{{/if}}>
@@ -304,15 +306,13 @@
 
                             </p>
                         </div>
-                        <!--
                         <ul class="research-actions">
-                            <li class="clip-reader"><a href="" rel="tooltip" data-original-title="View in Reader">Reader</a></li>
-                            <li class="clip-edit"><a href="" rel="tooltip" data-original-title="Edit">Edit</a></li>
-                            <li class="clip-read-later "><a href="" rel="tooltip" data-original-title="Mark as Read Later">Read Later</a></li>
-                            <li class="clip-star"><a href="" rel="tooltip" data-original-title="Star">Star</a></li>
-                            <li class="clip-destroy"><a href="" rel="tooltip" data-original-title="Remove">×</a></li>
+                            {{#if link}}
+                            <li class="reader"><a href="" rel="tooltip" title="View in Reader">&nbsp;</a></li>
+                            {{/if}}
+                            <li class="edit"><a href="" rel="tooltip" title="Edit">&nbsp;</a></li>
+                            <li class="destroy"><a href="" rel="tooltip" title="Remove">&nbsp;</a></li>
                         </ul>
-                        -->
                     </div>
                 </li>
                 {{/each}}
