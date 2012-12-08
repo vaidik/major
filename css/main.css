@@ -163,6 +163,23 @@ input[type=file] {
     width: 60%;
 }
 
+.notification {
+    position: absolute;
+    height: 20px;
+    max-width: 300px;
+    width: 23%;
+    z-index: 1000;
+    left: -webkit-calc(28%);
+    background: white;
+    opacity: 0.5;
+    padding: 5px;
+    text-align: center;
+    color: black;
+    text-shadow: silver 1px 1px 1px;
+
+    display: none;
+}
+
 
 /* Bootstrap Fixtures */
 .modal textarea, .modal input[type=text] {

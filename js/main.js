@@ -43,6 +43,15 @@ var main = {
     localData: {},
 
     workspace_current: "planner",
+
+    notify: function(msg) {
+        $('.notification')
+            .html(msg)
+            .fadeIn()
+            .delay(3000)
+            .fadeOut();
+    },
+
     toggle_workspace: function(current) {
         current = current.toLowerCase();
 
