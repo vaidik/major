@@ -15,9 +15,13 @@ $(document).ready(function() {
         },
         onChange: function($el, status, e) {
             if (main.workspace_current == "planner") {
+                editor.wysiwyg_init();
                 main.workspace_current = "editor";
             } else {
                 main.workspace_current = "planner";
+                var $form = $('#editor-form');
+                $('> span', $form).remove();
+                $('> textarea', $form).show();
             }
             main.toggle_workspace(main.workspace_current);
         },

@@ -4,12 +4,33 @@ var editor = {
     last_saved_update_interval: '',
     last_saved: new Date(),
 
+    options: "",
+
     autosave: function() {
         // send an ajax request to store at the backi
         this.last_saved = new Date();
     },
 
     wysiwyg_init: function() {
+        var tools = {
+            'characters': 'Character',
+            'themes': 'Theme',
+            'plots': 'Plot',
+            'settings': 'Setting',
+            'objects': 'Obj',
+            'scenes': 'Scene',
+        }; 
+
+        var dump = ds.dump();
+        var options = [];
+        for (k in tools) {
+            for (key in dump[k]) {
+                options.push(dump[k][key].data.name);
+            }
+        }
+
+        editor.options = options.join();
+
         tinyMCE.init({
             mode : "textareas",
             language: false,
@@ -23,7 +44,7 @@ var editor = {
             theme_advanced_toolbar_align : "left",
             theme_advanced_statusbar_location : "",
 
-            autocomplete_options: "john,jane,william",
+            autocomplete_options: editor.options,
         });
 
         // add a saving status label
@@ -41,7 +62,6 @@ var editor = {
 };
 
 $(document).ready(function() {
-    editor.wysiwyg_init();
     // Add autosave functionality
     $('#editor-form').sisyphus({
         timeout: 5,
