@@ -114,10 +114,16 @@
     font-size: 0.85em;
     color: white;
     text-shadow: white 0 0 4px;
+
+    transition: 0.1s box-shadow ease-out;
+    -o-transition: 0.1s box-shadow ease-out;
+    -moz-transition: 0.1s box-shadow ease-out;
+    -webkit-transition: 0.1s box-shadow ease-out;
+    border-radius: 6px;
 }
 
 .item:hover {
-    color: silver;
+    box-shadow: white 0 0 16px;
 }
 
 .item .item-icon {
