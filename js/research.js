@@ -24,22 +24,17 @@ var research = {
         research_data.sort(function(x, y){ return new Date(x.ID) < new Date(y.ID) });
 
         $('#research-list').html(source({research: research_data}));
-        $('abbr.timeago').timeago();
 
-        $('[rel=tooltip]').tipsy({fade: true});
-
-        $('#clip-list .destroy').click(function(e) {
-            var $li = $(this).parent().parent().parent();
-            var ID = $li.attr('data-id');
-
-            var obj = ds.deleteItem(ID);
-            ds.save();
-            research.build_list();
-        });
-
-        $('#clip-list .edit').click(function(e) {
+        function edit_research(element) {
             var modal = $('.modal');
-            var $li = $(this).parent().parent().parent();
+
+            var $li = $(element);
+            $(element).parents().each(function(index) {
+                if ($(this).attr('data-id')) {
+                    $li = $(this);
+                }
+            });
+
             var ID = $li.attr('data-id');
             var action = $li.clone().removeClass('clip').attr('class');
             action = action.substr(0, action.length - 1);
@@ -54,7 +49,9 @@ var research = {
             $('#research-add-object', modal).removeClass('hidden');
             $('#research-add-' + action, modal).removeClass('hidden');
             $('.modal-label').html('Edit ' + action.toTitleCase());
-            $('.modal-footer .removable').append('<button class="btn btn-info save" data-dismiss="modal" aria-hidden="true">Save</button>');
+            $('.modal-footer .removable')
+                .html('')
+                .append('<button class="btn btn-info save" data-dismiss="modal" aria-hidden="true">Save</button>');
 
             var $form = $('form', modal);
             $('[name=name]', $form).val(obj.object.title);
@@ -90,6 +87,27 @@ var research = {
             });
 
             modal.modal('show');
+        }
+
+        $('#clip-list > li.notes').click(function() {
+            edit_research(this);
+        });
+
+        $('abbr.timeago').timeago();
+
+        $('[rel=tooltip]').tipsy({fade: true});
+
+        $('#clip-list .destroy').click(function(e) {
+            var $li = $(this).parent().parent().parent();
+            var ID = $li.attr('data-id');
+
+            var obj = ds.deleteItem(ID);
+            ds.save();
+            research.build_list();
+        });
+
+        $('#clip-list .edit').click(function(e) {
+            edit_research(this);
         });
     },
 

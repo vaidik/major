@@ -291,7 +291,7 @@
                         <div class="research-content">
                             <div class="drag"></div>
                             <span class="research-date">{{#if time}}<abbr class="timeago" title="{{toISOdate time }}">{{toISOdate time }}</abbr>{{/if}}</span>
-                            <a href="{{ link }}" target="_blank" class="research-title">{{ title }}</a>
+                            <a href="{{#if link}}{{ link }}{{/if}}#" {{#if link}}target="_blank"{{/if}} class="research-title">{{ title }}</a>
             
                             <p class="summary horizontal-clamp"> 
                                 <i class="fav" {{#if link}}style="background-image: url(https://www.google.com/s2/u/0/favicons?domain={{ domain }}); background-position: 0 0px;"{{/if}}>
