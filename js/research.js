@@ -109,6 +109,23 @@ var research = {
             $('.modal-label').html('Add New ' + action.toTitleCase());
             $('.modal-footer .removable').append('<button class="btn btn-info save" data-dismiss="modal" aria-hidden="true">Save</button>');
 
+            if ($('[name=link]', modal).length) {
+                $('[name=link]', modal).on('blur', function(e) {
+                    var url = $(this).val();
+                    $('[name=name]')
+                        .attr('disabled', 'disabled')
+                        .val('Trying to fetch title of the URL...');
+                    $.get('http://localhost:5000/get_link_data', {url: url}, function(data) {
+                        data = JSON.parse(data);
+                        if (data.title) {
+                            $('[name=name]', modal).val(data.title);
+                        }
+                        $('[name=name]')
+                            .attr('disabled', false);
+                    });
+                });
+            }
+
             $('.modal-footer .save').click(function() {
                 var $modal_body = $('.modal-body');
 
