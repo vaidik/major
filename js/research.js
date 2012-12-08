@@ -6,27 +6,91 @@ var research = {
         var source = Handlebars.compile(t);
 
         var types = ['notes', 'links'];
-        var research = [];
+        var research_data = [];
         var dump = ds.dump();
         for (var j=0; j<types.length; j++) {
             if (dump[types[j]]) {
                 for (r in dump[types[j]]) {
-                    var pos = research.push(dump[types[j]][r])-1;
-                    research[pos].type = types[j];
+                    var pos = research_data.push(dump[types[j]][r])-1;
+                    research_data[pos].type = types[j];
                     if (types[j] == 'links') {
-                        research[pos].domain = dump[types[j]][r].link.split('://')[1].split('/')[0];
+                        research_data[pos].domain = dump[types[j]][r].link.split('://')[1].split('/')[0];
                     }
-                    research[pos].type = types[j];
+                    research_data[pos].type = types[j];
                 }
             }
         }
 
-        research.sort(function(x, y){ return new Date(x.time) < new Date(y.time) });
+        research_data.sort(function(x, y){ return new Date(x.ID) < new Date(y.ID) });
 
-        $('#research-list').html(source({research: research}));
+        $('#research-list').html(source({research: research_data}));
         $('abbr.timeago').timeago();
 
         $('[rel=tooltip]').tipsy({fade: true});
+
+        $('#clip-list .destroy').click(function(e) {
+            var $li = $(this).parent().parent().parent();
+            var ID = $li.attr('data-id');
+
+            var obj = ds.deleteItem(ID);
+            ds.save();
+            research.build_list();
+        });
+
+        $('#clip-list .edit').click(function(e) {
+            var modal = $('.modal');
+            var $li = $(this).parent().parent().parent();
+            var ID = $li.attr('data-id');
+            var action = $li.clone().removeClass('clip').attr('class');
+            action = action.substr(0, action.length - 1);
+
+            var obj = ds.getResearchItem(ID);
+
+            var modal_content = $('#modal-research-add').html();
+            $('.modal-body', modal).html(modal_content);
+
+            $('#research-add', modal).hide();
+
+            $('#research-add-object', modal).removeClass('hidden');
+            $('#research-add-' + action, modal).removeClass('hidden');
+            $('.modal-label').html('Edit ' + action.toTitleCase());
+            $('.modal-footer .removable').append('<button class="btn btn-info save" data-dismiss="modal" aria-hidden="true">Save</button>');
+
+            var $form = $('form', modal);
+            $('[name=name]', $form).val(obj.object.title);
+            $('[name=note]', $form).val(obj.object.research);
+            if (obj.object.link) {
+                $('[name=link]', $form).val(obj.object.link);
+            }
+            $('[name=tags]', $form).val(obj.object.tags);
+
+            $('.modal-footer .save').click(function() {
+                var $modal_body = $('.modal-body');
+
+                var object = {
+                    title: $('input[name=name]', $modal_body).val(),
+                    research: $('textarea', $modal_body).val(),
+                    tags: $('input[name=tags]', $modal_body).val(),
+                };
+
+                if (action == 'note') {
+                    var item = 1;
+                } else if (action == 'link') {
+                    var item = 1;
+                    object.link = $('input[name=link]', $modal_body).val();
+                }
+
+                for (k in object) {
+                    obj.object[k] = object[k];
+                };
+                obj.save();
+                console.log(research);
+                research.build_list();
+
+            });
+
+            modal.modal('show');
+        });
     },
 
     add_modal: function() {
@@ -152,7 +216,29 @@ var DataStorage = function(dataKey) {
         if (a) {
             return a;
         }
-    }
+    };
+
+    this.getResearchItem = function(ID) {
+        var dump = this.localData;
+        var id = parseInt(ID);
+
+        for (k in dump) {
+            for (j in dump[k]) {
+                if (dump[k][j].ID == id) {
+                    var obj = dump[k][j];
+
+                    var key = k.toTitleCase().substr(0, k.length-1);
+                    obj.created = true;
+                    var a = new research[key](obj);
+                    delete a.created;
+                }
+            }
+        }
+
+        if (a) {
+            return a;
+        }
+    };
 
     this.delete = function(type, ID) {
         //var i = this.exists(type, ID);
@@ -226,8 +312,12 @@ research.Item = function(obj) {
             this.object.ID = this.ID;
             ds.push(this.dataKey, this.ID, object);
         } else {
-            exists.x = this.object.x;
-            exists.y = this.object.y;
+            try {
+                exists.x = this.object.x;
+                exists.y = this.object.y;
+            } catch (e) {
+                ;
+            }
         }
 
         this.object.time = new Date().getTime();
@@ -272,7 +362,6 @@ Handlebars.registerHelper('toISOdate', function(date) {
 
 $(document).ready(function() {
     research.build_list();
-    window.setInterval(function() {}, 60000);
 
     $('#add_research').click(research.add_modal);
 
