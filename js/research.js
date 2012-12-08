@@ -16,6 +16,7 @@ var research = {
                     if (types[j] == 'links') {
                         research[pos].domain = dump[types[j]][r].link.split('://')[1].split('/')[0];
                     }
+                    research[pos].type = types[j];
                 }
             }
         }
@@ -279,5 +280,15 @@ $(document).ready(function() {
     });
 
     $('#research #research-toolbar select#actions').select2({
+    });
+
+    $('select#filter').change(function(e) {
+        var val = $(this).val();
+        $('#clip-list li').hide();
+        if (val == "all") {
+            $('#clip-list li').show();
+        } else {
+            $('#clip-list li.' + val).show();
+        }
     });
 });

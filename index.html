@@ -105,13 +105,13 @@
                                 <td class="add" id="add_research">+</td>
                                 <td valign="middle" style="padding-left: 20px;">
                                     <select id="filter" style="width: 120px;">
-                                        <option value="AL">All</option>
-                                        <option value="AL">Pictures</option>
-                                        <option value="WY">Videos</option>
-                                        <option value="WY">Audios</option>
-                                        <option value="WY">Documents</option>
-                                        <option value="WY">Notes</option>
-                                        <option value="WY">Links</option>
+                                        <option value="all">All</option>
+                                        <option value="pictures">Pictures</option>
+                                        <option value="videos">Videos</option>
+                                        <option value="audios">Audios</option>
+                                        <option value="documents">Documents</option>
+                                        <option value="notes">Notes</option>
+                                        <option value="links">Links</option>
                                     </select>
                                     &nbsp; &nbsp;
                                     <select id="actions" style="width: 120px;">
@@ -285,7 +285,7 @@
         <script id="research-list-template" type="text/x-handlebars-template">
             <ul id="clip-list" class="unstyled" style="display: block; ">
                 {{#each research}}
-                <li class="clip" data-id="{{ ID }}">
+                <li class="clip {{ type }}" data-id="{{ ID }}">
                     <div class="display">
                         <div class="research-content">
                             <div class="drag"></div>

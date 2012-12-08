@@ -28,6 +28,11 @@ tools.on('create', function(data) {
         var t = new planner[key](data);
         t.update({});
     }
+
+    if ($('#editor-form > span').length) {
+        $(this).remove();
+        editor.wysiwyg_init();
+    }
 });
 
 // when contents of a tool are updated
