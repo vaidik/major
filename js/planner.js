@@ -189,7 +189,12 @@ var Tool = function(object) {
             return;
         }
 
-        this.merge(object);
+        //this.merge(object);
+        console.log(object);
+        for (key in object) {
+            this.object.data[key] = object[key];
+            console.log(key);
+        }
         this.object.x = this.$dom.css('left');
         this.object.y = this.$dom.css('top');
         this.save();
@@ -221,12 +226,22 @@ var Tool = function(object) {
                 var _ID = parseInt($(ops.$trigger).attr('data-id'));
             }
 
+
             var modal = $('.modal');
+            var label = $(this).clone().removeClass('character').removeClass('item').attr('class').toLowerCase();
+            label = label.substr(0, label.length-1);
             var body = $('#tool-modal-' + label.toLowerCase()).html();
-            $('.modal-label', modal).html('New ' + label);
+            $('.modal-label', modal).html('New ' + label.toTitleCase());
             $('.modal-body', modal).html(body);
             $('.modal-footer .removable').append('<button class="btn btn-info save" data-dismiss="modal" aria-hidden="true">Save</button>');
             modal.modal('show');
+
+            var data = ds.getItem(_ID);
+            for (key in data.object.data) {
+                $('.modal-body form [name=' + key + ']').val(data.object.data[key]);
+                console.log($('.modal-body form [name=' + key + ']'));
+                console.log(data.object.data[key], '.modal-body form [name=' + key + ']');
+            }
 
             $('.modal-footer .save', modal).click({_ID: _ID}, function(e) {
                 var $modal_body = $('.modal-body');
@@ -237,11 +252,9 @@ var Tool = function(object) {
                     form_obj[form_array[i].name] = form_array[i].value;
                 }
 
-                for (var i=0; i<ds.localObjects.length; i++) {
-                    if (ds.localObjects[i]._ID == e.data._ID) {
-                        ds.localObjects[i].update(form_obj);
-                    }
-                }
+                console.log(form_obj);
+                var clicked_obj = ds.getItem(_ID);
+                clicked_obj.update(form_obj, true, 'update');
             });
         }
         this.modal = modal;
@@ -509,6 +522,7 @@ planner.Obj.inherit(Tool);
 planner.Plot.inherit(Tool);
 
 $(document).ready(function() {
+    planner.toggle_scene_manager();
     // adjust board
     planner.adjust_board();
     planner.adjust_scene_manager();

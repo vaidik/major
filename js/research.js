@@ -106,6 +106,20 @@ var research = {
             research.build_list();
         });
 
+        $('#clip-list .reader').click(function(e) {
+            var $li = $(this).parent().parent().parent();
+            var ID = $li.attr('data-id');
+
+            var obj = ds.getResearchItem(ID);
+            console.log(obj);
+            var url = obj.object.link;
+
+            var link_content = localStorage.getItem(url);
+            $('.modal-label').html('Reader: ' + url);
+            //$('.modal-body').html(link_content);
+            $('.modal').modal('show');
+        });
+
         $('#clip-list .edit').click(function(e) {
             edit_research(this);
         });
@@ -130,6 +144,8 @@ var research = {
             if ($('[name=link]', modal).length) {
                 $('[name=link]', modal).on('blur', function(e) {
                     var url = $(this).val();
+                    if (url == "") { return; }
+
                     $('[name=name]')
                         .attr('disabled', 'disabled')
                         .val('Trying to fetch title of the URL...');
@@ -140,6 +156,14 @@ var research = {
                         }
                         $('[name=name]')
                             .attr('disabled', false);
+
+                        localStorage.setItem(url, data.body);
+                    })
+                    .error(function() {
+                        $('[name=name]')
+                            .attr('disabled', false)
+                            .val('')
+                            .after('<div style="color: red; margin-top: -5px; margin-bottom: 5px; position: relative;">Unable to fetch the page\'s title.</div>');
                     });
                 });
             }
